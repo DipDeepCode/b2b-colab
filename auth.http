@@ -47,5 +47,7 @@ Content-Type: application/json
 # @no-log
 GET http://localhost:8080/swagger-ui/index.html
 
-
+###
+# @no-log
+GET http://localhost:8080/main.js
 
