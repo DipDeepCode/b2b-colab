@@ -1,0 +1,51 @@
+### register
+# @no-log
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "u",
+  "password": "p"
+}
+
+### login
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "pass"
+}
+
+### test
+# @no-log
+GET http://localhost:8080/test
+
+### logout
+POST http://localhost:8080/api/logout
+
+### delete user
+# @no-log
+DELETE http://localhost:8080/api/auth
+Content-Type: application/json
+
+{
+  "username": "user11222"
+}
+
+### change password
+# @no-log
+PATCH http://localhost:8080/api/auth
+Content-Type: application/json
+
+{
+  "oldPassword": "pass123",
+  "newPassword": "pass"
+}
+
+###
+# @no-log
+GET http://localhost:8080/swagger-ui/index.html
+
+
+
