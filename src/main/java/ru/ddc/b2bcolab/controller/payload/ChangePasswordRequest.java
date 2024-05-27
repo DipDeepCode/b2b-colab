@@ -1,6 +1,7 @@
 package ru.ddc.b2bcolab.controller.payload;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChangePasswordRequest {
+
+    @NotNull
+    @NotBlank(message = "should be not empty")
     private String oldPassword;
 
     @NotBlank(message = "should be not empty")

@@ -1,5 +1,6 @@
 package ru.ddc.b2bcolab.configuratioin;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,13 +29,15 @@ public class WebSecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers("/test/**").hasRole("USER")
                         .anyRequest().authenticated())
-                .securityContext(securityContext -> securityContext
-                        .requireExplicitSave(false))
+                .securityContext(securityContext -> securityContext.requireExplicitSave(false))
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
+                        .logoutSuccessHandler(
+                                (request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)

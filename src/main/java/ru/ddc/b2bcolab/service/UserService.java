@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import ru.ddc.b2bcolab.controller.payload.ChangePasswordRequest;
-import ru.ddc.b2bcolab.controller.payload.DeleteRequest;
+import ru.ddc.b2bcolab.controller.payload.DeleteUserRequest;
 import ru.ddc.b2bcolab.controller.payload.RegisterRequest;
 import ru.ddc.b2bcolab.utils.RegistrationRequestValidator;
 
@@ -34,7 +34,7 @@ public class UserService {
         jdbcUserDetailsManager.createUser(userDetails);
     }
 
-    public void deleteUser(DeleteRequest request) {
+    public void deleteUser(DeleteUserRequest request) {
         jdbcUserDetailsManager.deleteUser(request.getUsername());
     }
 
