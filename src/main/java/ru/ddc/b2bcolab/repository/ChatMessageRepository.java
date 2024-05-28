@@ -20,8 +20,8 @@ public class ChatMessageRepository implements CrudRepository<ChatMessage, Long> 
     @Override
     public ChatMessage save(ChatMessage model) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcClient.sql("insert into chat_message (chat_id, sender_username, recipient_username, content, created_at) " +
-                        "values (:chatId, :senderUsername, :recipientUsername, :content, :createdAt)")
+        jdbcClient.sql("insert into chat_message (chat_room_id, username, content, created_at) " +
+                        "values (:chatId, :username, :content, :createdAt)")
                 .paramSource(model)
                 .update(keyHolder);
         model.setId(keyHolder.getKeyAs(Long.class));
@@ -41,9 +41,9 @@ public class ChatMessageRepository implements CrudRepository<ChatMessage, Long> 
                 .optional();
     }
 
-    public List<ChatMessage> findByChatId(Long chatid) {
-        return jdbcClient.sql("select * from chat_message where chat_id = :chatId")
-                .param("chatId", chatid)
+    public List<ChatMessage> findByChatRoomId(Long chatRoomId) {
+        return jdbcClient.sql("select * from chat_message where chat_room_id = :chatRoomId")
+                .param("chatRoomId", chatRoomId)
                 .query(ChatMessage.class)
                 .list();
     }

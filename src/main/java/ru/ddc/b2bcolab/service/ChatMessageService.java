@@ -30,7 +30,7 @@ public class ChatMessageService {
     }
 
     public List<ChatMessage> getChatMessagesByChatRoomId(final Long chatId) {
-        return chatMessageRepository.findByChatId(chatId);
+        return chatMessageRepository.findByChatRoomId(chatId);
     }
 
     public ChatMessage updateChatMessage(final Long id, final UpdateChatMessageRequest request) {
