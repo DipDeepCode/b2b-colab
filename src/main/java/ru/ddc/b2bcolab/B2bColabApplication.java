@@ -3,6 +3,7 @@ package ru.ddc.b2bcolab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class B2bColabApplication {
 
