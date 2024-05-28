@@ -1,0 +1,19 @@
+### create message
+# @no-log
+POST http://localhost:8080/api/chatMessages
+Content-Type: application/json
+
+{
+  "chatId": 1,
+  "senderUsername": "second",
+  "recipientUsername": "first",
+  "content": "content6"
+}
+
+### find messages by chatRoomId
+# @no-log
+GET http://localhost:8080/api/chatRooms/1/chatMessages
+
+### delete message by id
+# @no-log
+DELETE http://localhost:8080/api/chatMessages/6
