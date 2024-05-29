@@ -3,8 +3,9 @@ create table users (
     password VARCHAR(500) NOT NULL,
     email VARCHAR(500) NOT NULL,
     phone VARCHAR(20) NOT NULL,
+    role VARCHAR(20) NOT NULL,
     enabled BOOLEAN NOT NULL,
-    is_moderation BOOLEAN NOT NULL,
+    is_moderation BOOLEAN NOT NULL
 );
 
 COMMENT ON TABLE users IS 'Таблица хранения пользователей';
@@ -23,6 +24,34 @@ create table authorities (
 );
 create unique index ix_auth_username on authorities (username, authority);
 
+CREATE TABLE tariffs (
+    id SERIAL PRIMARY KEY,
+    name_tariff VARCHAR(50) NOT NULL,
+    telegram BOOLEAN NOT NULL,
+    access_to_lc BOOLEAN NOT NULL,
+    brand_catalog BOOLEAN NOT NULL,
+    telegram_tags BOOLEAN NOT NULL,
+    telegram_likes BOOLEAN NOT NULL,
+    modern_collab BOOLEAN NOT NULL,
+    selection_brands BOOLEAN NOT NULL,
+    message BOOLEAN NOT NULL,
+    price INT NOT NULL,
+    period VARCHAR(255) NOT NULL
+);
+
+COMMENT ON TABLE tariffs IS 'Таблица хранения доступных тарифов';
+COMMENT ON COLUMN tariffs.name_tariff IS 'Название тарифа';
+COMMENT ON COLUMN tariffs.telegram IS 'Доступ к чату в Telegram';
+COMMENT ON COLUMN tariffs.access_to_lc IS 'Доступ к ЛК с каталогом брендов';
+COMMENT ON COLUMN tariffs.brand_catalog IS 'Размещение в каталоге брендов';
+COMMENT ON COLUMN tariffs.telegram_tags IS 'Оповещение в каталогах о метчах';
+COMMENT ON COLUMN tariffs.telegram_likes IS 'Оповещение в Telegram о лайках';
+COMMENT ON COLUMN tariffs.modern_collab IS 'Модерация и фасилитация ваших коллабораций';
+COMMENT ON COLUMN tariffs.selection_brands IS 'Индивидуальная подборка брендов для коллаб и помощь с выходом на ЛПР (до 3 брендов)';
+COMMENT ON COLUMN tariffs.message IS 'Возможность отправлять сопроводительное сообщение на тарифе комфорт и бизнес (+чтобы эта опция продавалась лайт тарифу с возможностью перехода на комфорт и бизнес)';
+COMMENT ON COLUMN tariffs.price IS 'Цена тарифа';
+COMMENT ON COLUMN tariffs.period IS 'Время доступа к сервису';
+
 CREATE TABLE brands (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -36,7 +65,7 @@ CREATE TABLE brands (
     geo VARCHAR(255) NOT NULL,
     count_ball INT NOT NULL,
     count_like DECIMAL NOT NULL,
-    username_id INT,
+    username_id VARCHAR(50),
     tariff_id INT,
     FOREIGN KEY (tariff_id) REFERENCES tariffs (id),
     FOREIGN KEY (username_id) REFERENCES users (username)
@@ -72,35 +101,6 @@ CREATE TABLE likes (
     brand_id INT,
     FOREIGN KEY (brand_id) REFERENCES brands (id)
 );
-
 COMMENT ON TABLE likes IS 'Таблица хранения лайков';
 COMMENT ON COLUMN likes.from_the_brand IS 'От кого поставлен лайк';
 COMMENT ON COLUMN likes.to_the_brand IS 'Кому поставлен лайк';
-
-CREATE TABLE tariffs (
-    id SERIAL PRIMARY KEY,
-    name_tariff VARCHAR(50) NOT NULL,
-    telegram BOOLEAN NOT NULL,
-    access_to_lc BOOLEAN NOT NULL,
-    brand_catalog BOOLEAN NOT NULL,
-    telegram_tags BOOLEAN NOT NULL,
-    telegram_likes BOOLEAN NOT NULL,
-    modern_collab BOOLEAN NOT NULL,
-    selection_brands BOOLEAN NOT NULL,
-    message BOOLEAN NOT NULL,
-    price INT NOT NULL,
-    period VARCHAR(255) NOT NULL
-);
-
-COMMENT ON TABLE tariffs IS 'Таблица хранения доступных тарифов';
-COMMENT ON COLUMN tariffs.name_tariff IS 'Название тарифа';
-COMMENT ON COLUMN tariffs.telegram IS 'Доступ к чату в Telegram';
-COMMENT ON COLUMN tariffs.access_to_lc IS 'Доступ к ЛК с каталогом брендов';
-COMMENT ON COLUMN tariffs.brand_catalog IS 'Размещение в каталоге брендов';
-COMMENT ON COLUMN tariffs.telegram_tags IS 'Оповещение в каталогах о метчах';
-COMMENT ON COLUMN tariffs.telegram_likes IS 'Оповещение в Telegram о лайках';
-COMMENT ON COLUMN tariffs.modern_collab IS 'Модерация и фасилитация ваших коллабораций';
-COMMENT ON COLUMN tariffs.selection_brands IS 'Индивидуальная подборка брендов для коллаб и помощь с выходом на ЛПР (до 3 брендов)';
-COMMENT ON COLUMN tariffs.message IS 'Возможность отправлять сопроводительное сообщение на тарифе комфорт и бизнес (+чтобы эта опция продавалась лайт тарифу с возможностью перехода на комфорт и бизнес)';
-COMMENT ON COLUMN tariffs.price IS 'Цена тарифа';
-COMMENT ON COLUMN tariffs.period IS 'Время доступа к сервису';
