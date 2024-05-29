@@ -8,9 +8,9 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import ru.ddc.b2bcolab.controller.payload.ChangePasswordRequest;
-import ru.ddc.b2bcolab.controller.payload.DeleteUserRequest;
-import ru.ddc.b2bcolab.controller.payload.RegisterRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.ChangePasswordRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.DeleteUserRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.RegisterRequest;
 import ru.ddc.b2bcolab.utils.RegistrationRequestValidator;
 
 @Service

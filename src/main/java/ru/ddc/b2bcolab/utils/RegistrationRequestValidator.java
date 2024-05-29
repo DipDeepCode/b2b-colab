@@ -5,7 +5,7 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.ddc.b2bcolab.controller.payload.RegisterRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.RegisterRequest;
 
 @Component
 @RequiredArgsConstructor

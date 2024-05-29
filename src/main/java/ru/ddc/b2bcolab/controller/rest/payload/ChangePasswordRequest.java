@@ -1,4 +1,4 @@
-package ru.ddc.b2bcolab.controller.payload;
+package ru.ddc.b2bcolab.controller.rest.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

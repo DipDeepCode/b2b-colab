@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
-                        .requestMatchers("/chat/**", "main.js", "main.css").permitAll()
+                        .requestMatchers("/chat/**", "main.js", "main.css", "favicon.ico").permitAll()
                         .requestMatchers("/api/chatRooms/**").permitAll()
                         .requestMatchers("/api/chatMessages/**").permitAll()
                         .requestMatchers("/spring-boot-tutorial").permitAll()

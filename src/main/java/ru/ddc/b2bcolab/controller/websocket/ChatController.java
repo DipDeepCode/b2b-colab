@@ -1,4 +1,4 @@
-package ru.ddc.b2bcolab.controller;
+package ru.ddc.b2bcolab.controller.websocket;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -10,11 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import ru.ddc.b2bcolab.controller.websocket.payload.PrivateWebSocketMessage;
 import ru.ddc.b2bcolab.model.Message;
 import ru.ddc.b2bcolab.model.User;
+import ru.ddc.b2bcolab.service.ChatMessageService;
 import ru.ddc.b2bcolab.service.MemberStore;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import java.util.Map;
 public class ChatController {
     private final MemberStore memberStore;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ChatMessageService chatMessageService;
 
     @GetMapping("/chat")
     public String index() {
@@ -41,21 +43,19 @@ public class ChatController {
     }
 
     @MessageMapping("/message")
-    public void getMessage(Message message, Principal principal) throws Exception {
+    public void getMessage(PrivateWebSocketMessage webSocketMessage) {
         System.out.println("---There");
-        System.out.println("message.comment:    " + message.comment());
-        System.out.println("message.receiverId: " + message.receiverId());
-        System.out.println("message.user:       " + message.user());
-        System.out.println("principal:          " + principal);
-        Message newMessage = new Message(null, message.receiverId(), message.comment());
-        simpMessagingTemplate.convertAndSend("/topic/messages", newMessage);
+        System.out.println(webSocketMessage);
+//        chatMessageService.createChatMessage(webSocketMessage);
+//        Message newMessage = new Message(null, message.receiverId(), message.comment());
+//        simpMessagingTemplate.convertAndSend("/topic/messages", newMessage);
     }
 
     @MessageMapping("/privatemessage")
-    public void getPrivateMessage(Message message) throws Exception {
-        Message newMessage = new Message(new User(null, message.user().serialId(), message.user().username()), message.receiverId(), message.comment());
-        simpMessagingTemplate.convertAndSendToUser(memberStore.getMember(message.receiverId()).id(), "/topic/privatemessages", newMessage);
-
+    public void getPrivateMessage(PrivateWebSocketMessage webSocketMessage) {
+        System.out.println(webSocketMessage);
+//        Message newMessage = new Message(new User(null, webSocketMessage.user().serialId(), webSocketMessage.user().username()), webSocketMessage.receiverId(), webSocketMessage.comment());
+//        simpMessagingTemplate.convertAndSendToUser(memberStore.getMember(webSocketMessage.receiverId()).id(), "/topic/privatemessages", newMessage);
     }
 
     @EventListener

@@ -1,4 +1,4 @@
-package ru.ddc.b2bcolab.controller.payload;
+package ru.ddc.b2bcolab.controller.rest.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,9 +11,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DeleteUserRequest {
+public class LoginRequest {
 
     @NotNull
     @NotBlank(message = "should be not empty")
     private String username;
+
+    @NotNull
+    @NotBlank(message = "should be not empty")
+    private String password;
 }

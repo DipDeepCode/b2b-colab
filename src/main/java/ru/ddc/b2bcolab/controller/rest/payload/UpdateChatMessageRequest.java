@@ -1,4 +1,4 @@
-package ru.ddc.b2bcolab.controller.payload;
+package ru.ddc.b2bcolab.controller.rest.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

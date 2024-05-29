@@ -1,4 +1,4 @@
-package ru.ddc.b2bcolab.controller;
+package ru.ddc.b2bcolab.controller.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

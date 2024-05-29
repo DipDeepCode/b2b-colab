@@ -1,4 +1,4 @@
-package ru.ddc.b2bcolab.controller.payload;
+package ru.ddc.b2bcolab.controller.rest.payload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateChatRoomRequest {
+public class UpdateChatRoomRequest {
     private String name;
 }

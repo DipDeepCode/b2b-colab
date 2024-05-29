@@ -1,11 +1,11 @@
-package ru.ddc.b2bcolab.controller;
+package ru.ddc.b2bcolab.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.ddc.b2bcolab.controller.payload.CreateChatMessageRequest;
-import ru.ddc.b2bcolab.controller.payload.UpdateChatMessageRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.CreateChatMessageRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.UpdateChatMessageRequest;
 import ru.ddc.b2bcolab.model.ChatMessage;
 import ru.ddc.b2bcolab.service.ChatMessageService;
 

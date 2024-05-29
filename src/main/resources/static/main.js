@@ -24,19 +24,38 @@ class User {
 };
 
 class Message {
-	user;
-	receiverId;
-	comment;
+	id;
+	chatRoomId;
+	username;
+	content;
+	createdAt;
 
-	constructor(user, receiverId, comment) {
-		this.user = user;
-		this.receiverId = receiverId
-		this.comment = comment;
+	constructor(id, chatRoomId, username, content, createdAt) {
+		this.id = id;
+		this.chatRoomId = chatRoomId;
+		this.username = username;
+		this.content = content;
+		this.createdAt = createdAt;
 	}
 };
 
+class PrivateMessage {
+    senderUsername;
+    receiverUsername;
+    content;
+    createdAt;
+
+    constructor(senderUsername, receiverUsername, content) {
+        this.senderUsername = senderUsername;
+        this.receiverUsername = receiverUsername;
+        this.content = content;
+        this.createdAt = null;
+    }
+}
+
 var user;
 var message;
+var privateMessage;
 var userName;
 var buttonConnect;
 var buttonDisConnect;
@@ -47,9 +66,13 @@ var usersList;
 var messagesList;
 var online;
 var sendMessage;
+var sendMessage2;
 var send;
+var send2;
 var formSendMessage;
+var formSendMessage2;
 var inputSendMessage;
+var inputSendMessage2;
 var messageList;
 var membersList;
 var membersListSelected;
@@ -66,9 +89,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	messagesList = document.getElementById("messagesList");
 	formInput = document.getElementById("form");
 	sendMessage = document.getElementById("sendmessage");
+	sendMessage2 = document.getElementById("sendmessage2");
 	send = document.getElementById("send");
+	send2 = document.getElementById("send2");
 	formSendMessage = document.getElementById("formsendmessage");
+	formSendMessage2 = document.getElementById("formsendmessage2");
 	inputSendMessage = document.getElementById("inputsendmessage");
+	inputSendMessage2 = document.getElementById("inputsendmessage2");
 	messageList = document.getElementById("messagelist");
 	membersList = document.getElementById("memberslist");
 	messageLabel = document.getElementById("messagelabel");
@@ -84,13 +111,18 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	send.addEventListener("click", (e) => {
-		if(selectedMember == 0) {
+		// if(selectedMember == 0) {
 			sendMessages();
-		} else {
-			sendPrivateMessages(selectedMember);
-		}
+		// } else {
+		// 	sendPrivateMessages(selectedMember);
+		// }
 		e.preventDefault();
 	});
+
+	send2.addEventListener("click", (e) => {
+		sendPrivateMessages();
+		e.preventDefault();
+	})
 
 	userName.addEventListener("keyup", () => {
 		const userNameValue = userName.value;
@@ -133,7 +165,7 @@ function disconnect() {
 
 function sendMessages() {
 	console.log('Send public messages');
-	message = new Message(null, null, inputSendMessage.value)
+	message = new Message(null, 3, 'first', 'content from ui', null)
 	client.publish({
 		destination: "/app/message",//appMessages,
 		body: JSON.stringify(message)
@@ -142,35 +174,36 @@ function sendMessages() {
 
 function sendPrivateMessages(receiverId) {
 	console.log('Send private message');
-	message = new Message(user, receiverId, inputSendMessage.value)
+	// message = new Message(null, 3, 'first', 'content from ui', null)
+	privateMessage = new PrivateMessage('first', 'second', 'content')
 	client.publish({
-		destination: appPrivateMessages,
-		body: JSON.stringify(message)
+		destination: "/app/privatemessage",//appPrivateMessages,
+		body: JSON.stringify(privateMessage)
 	});
 }
 
 client.onConnect = (frame) => {
 	setConnected(true);
 	console.log('Connected: ' + frame);
-	user = new User(uuidv4(), null, userName.value);
+	user = new User(getUsername(), null, userName.value);
 	online.innerHTML = "<p>" + user.username + " you are online!</p>";
 
-	client.subscribe(privatePreUrl + user.id + userUrl, (usersList) => {
-		showUsers(JSON.parse(usersList.body));
-	});
-
-	client.subscribe(topicUrl, (message) => {
-		showMessagesList(JSON.parse(message.body));
-	});
-
-	client.subscribe(privatePreUrl + user.id + privateTopicUrl, (message) => {
-		showPrivateMessagesList(JSON.parse(message.body));
-	});
-
-	client.publish({
-		destination: appUsers,
-		body: JSON.stringify(user)
-	});
+	// client.subscribe(privatePreUrl + user.id + userUrl, (usersList) => {
+	// 	showUsers(JSON.parse(usersList.body));
+	// });
+	//
+	// client.subscribe(topicUrl, (message) => {
+	// 	showMessagesList(JSON.parse(message.body));
+	// });
+	//
+	// client.subscribe(privatePreUrl + user.id + privateTopicUrl, (message) => {
+	// 	showPrivateMessagesList(JSON.parse(message.body));
+	// });
+	//
+	// client.publish({
+	// 	destination: appUsers,
+	// 	body: JSON.stringify(user)
+	// });
 };
 
 client.onWebSocketError = (error) => {
@@ -243,13 +276,8 @@ function hasOnlyLettersAndNumbers(string) {
 	return regex.test(string)
 }
 
-function uuidv4() {
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
-		.replace(/[xy]/g, function (c) {
-			const r = Math.random() * 16 | 0,
-				v = c == 'x' ? r : (r & 0x3 | 0x8);
-			return v.toString(16);
-		});
+function getUsername() {
+	return 'first'
 }
 
 function updateScroll(element) {

@@ -1,11 +1,11 @@
-package ru.ddc.b2bcolab.controller;
+package ru.ddc.b2bcolab.controller.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.ddc.b2bcolab.controller.payload.CreateChatRoomRequest;
-import ru.ddc.b2bcolab.controller.payload.UpdateChatRoomRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.CreateChatRoomRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.UpdateChatRoomRequest;
 import ru.ddc.b2bcolab.model.ChatRoom;
 import ru.ddc.b2bcolab.service.ChatRoomService;
 
@@ -35,7 +35,7 @@ public class ChatRoomController {
         return ResponseEntity.ok(chatRooms);
     }
 
-    @GetMapping("/chatRooms")
+    @GetMapping("/chatRoomsByUsername")
     public ResponseEntity<?> getChatRoomsByUserUsername(@RequestParam String username) {
         List<ChatRoom> chatRooms = chatRoomService.getChatRoomsByUserUsername(username);
         return ResponseEntity.ok(chatRooms);

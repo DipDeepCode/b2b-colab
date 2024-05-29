@@ -21,7 +21,7 @@ public class ChatMessageRepository implements CrudRepository<ChatMessage, Long> 
     public ChatMessage save(ChatMessage model) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcClient.sql("insert into chat_message (chat_room_id, username, content, created_at) " +
-                        "values (:chatId, :username, :content, :createdAt)")
+                        "values (:chatRoomId, :username, :content, :createdAt)")
                 .paramSource(model)
                 .update(keyHolder);
         model.setId(keyHolder.getKeyAs(Long.class));

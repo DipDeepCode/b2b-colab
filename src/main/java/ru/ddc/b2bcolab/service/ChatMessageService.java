@@ -3,11 +3,12 @@ package ru.ddc.b2bcolab.service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import ru.ddc.b2bcolab.controller.payload.CreateChatMessageRequest;
-import ru.ddc.b2bcolab.controller.payload.UpdateChatMessageRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.CreateChatMessageRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.UpdateChatMessageRequest;
 import ru.ddc.b2bcolab.model.ChatMessage;
 import ru.ddc.b2bcolab.repository.ChatMessageRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,6 +19,9 @@ public class ChatMessageService {
 
     public ChatMessage createChatMessage(final CreateChatMessageRequest request) {
         ChatMessage chatMessage = modelMapper.map(request, ChatMessage.class);
+        if (chatMessage.getCreatedAt() == null) {
+            chatMessage.setCreatedAt(LocalDateTime.now());
+        }
         return chatMessageRepository.save(chatMessage);
     }
 

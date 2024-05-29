@@ -1,4 +1,4 @@
-package ru.ddc.b2bcolab.controller;
+package ru.ddc.b2bcolab.controller.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,10 +15,10 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ru.ddc.b2bcolab.controller.payload.ChangePasswordRequest;
-import ru.ddc.b2bcolab.controller.payload.DeleteUserRequest;
-import ru.ddc.b2bcolab.controller.payload.LoginRequest;
-import ru.ddc.b2bcolab.controller.payload.RegisterRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.ChangePasswordRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.DeleteUserRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.LoginRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.RegisterRequest;
 import ru.ddc.b2bcolab.service.UserService;
 
 import java.util.HashMap;

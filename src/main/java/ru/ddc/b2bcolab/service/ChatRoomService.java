@@ -3,8 +3,8 @@ package ru.ddc.b2bcolab.service;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import ru.ddc.b2bcolab.controller.payload.CreateChatRoomRequest;
-import ru.ddc.b2bcolab.controller.payload.UpdateChatRoomRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.CreateChatRoomRequest;
+import ru.ddc.b2bcolab.controller.rest.payload.UpdateChatRoomRequest;
 import ru.ddc.b2bcolab.model.ChatRoom;
 import ru.ddc.b2bcolab.repository.ChatRoomRepository;
 

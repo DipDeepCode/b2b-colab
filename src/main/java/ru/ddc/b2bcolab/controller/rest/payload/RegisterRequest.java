@@ -1,7 +1,8 @@
-package ru.ddc.b2bcolab.controller.payload;
+package ru.ddc.b2bcolab.controller.rest.payload;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,13 +12,14 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginRequest {
+public class RegisterRequest {
 
     @NotNull
     @NotBlank(message = "should be not empty")
+    @Size(min = 3, max = 20, message = "the size should be in the range from {min} to {max}")
     private String username;
 
-    @NotNull
     @NotBlank(message = "should be not empty")
+    @Size(min = 3, max = 120, message = "the size should be in the range from {min} to {max}")
     private String password;
 }

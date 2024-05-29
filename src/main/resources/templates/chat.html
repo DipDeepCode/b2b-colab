@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Spring Boot Tutorial Web Chat</title>
+    <title>Web Chat</title>
     <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
     <link href="/main.css" rel="stylesheet">
     <script src="/main.js"></script>
@@ -10,8 +10,7 @@
 <body>
 <div class="header">
     <div class="center">
-        <h1>Spring Boot Tutorial</h1>
-        <h2>Web Chat</h2>
+        <h1>Web Chat</h1>
     </div>
 </div>
 <div class="username">
@@ -21,7 +20,7 @@
             <div class="row">
                 <label class="row" for="connect">Username:</label>
                 <input type="text" id="username" placeholder="Your username here...">
-                <button id="connect" type="submit" disabled="disabled">Connect</button>
+                <button id="connect" type="submit">Connect</button>
                 <button id="disconnect" type="submit" disabled="disabled">Disconnect</button>
             </div>
         </form>
@@ -32,6 +31,15 @@
                     <label id="messagelabel" class="row" for="send">Send a public message:</label>
                     <input type="text" id="inputsendmessage" placeholder="Type your message here...">
                     <button id="send" type="submit">Send</button>
+                </div>
+            </form>
+        </div>
+        <div  class="row" id="sendmessage2">
+            <form id="formsendmessage2">
+                <div>
+                    <label id="messagelabel2" class="row" for="send2">Send a private message:</label>
+                    <input type="text" id="inputsendmessage2" placeholder="Type your message here...">
+                    <button id="send2" type="submit">Send</button>
                 </div>
             </form>
         </div>
