@@ -6,7 +6,7 @@ import com.stripe.model.Charge;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.ddc.b2bcolab.payments.ChargeRequest;
+import ru.ddc.b2bcolab.payments.entity.ChargeRequest;
 
 import java.util.HashMap;
 import java.util.Map;

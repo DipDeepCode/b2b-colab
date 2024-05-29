@@ -3,35 +3,30 @@ package ru.ddc.b2bcolab.payments.controllers;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.ddc.b2bcolab.payments.ChargeRequest;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import ru.ddc.b2bcolab.payments.entity.ChargeRequest;
 import ru.ddc.b2bcolab.payments.services.StripeService;
 
-@Controller
+@RestController
 public class ChargeController {
 
     @Autowired
     private StripeService paymentsService;
 
-    @PostMapping("/payments/result")
-    public String charge(ChargeRequest chargeRequest, Model model)
-            throws StripeException {
+    @PostMapping("/api/payments/charge")
+    public ResponseEntity<Charge> createCharge(@RequestBody ChargeRequest chargeRequest) throws StripeException {
         chargeRequest.setDescription("Example charge");
         chargeRequest.setCurrency(ChargeRequest.Currency.RUB);
         Charge charge = paymentsService.charge(chargeRequest);
-        model.addAttribute("id", charge.getId());
-        model.addAttribute("status", charge.getStatus());
-        model.addAttribute("chargeId", charge.getId());
-        model.addAttribute("balance_transaction", charge.getBalanceTransaction());
-        return "result";
+        return ResponseEntity.ok(charge);
     }
 
     @ExceptionHandler(StripeException.class)
-    public String handleError(Model model, StripeException ex) {
-        model.addAttribute("error", ex.getMessage());
-        return "result";
+    public ResponseEntity<String> handleError(StripeException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }

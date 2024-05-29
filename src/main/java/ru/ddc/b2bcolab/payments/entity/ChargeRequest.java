@@ -1,4 +1,4 @@
-package ru.ddc.b2bcolab.payments;
+package ru.ddc.b2bcolab.payments.entity;
 
 import lombok.Data;
 
