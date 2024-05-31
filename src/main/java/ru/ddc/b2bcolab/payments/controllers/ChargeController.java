@@ -19,8 +19,6 @@ public class ChargeController {
 
     @PostMapping("/api/payments/charge")
     public ResponseEntity<Charge> createCharge(@RequestBody ChargeRequest chargeRequest) throws StripeException {
-        chargeRequest.setDescription("Example charge");
-        chargeRequest.setCurrency(ChargeRequest.Currency.RUB);
         Charge charge = paymentsService.charge(chargeRequest);
         return ResponseEntity.ok(charge);
     }

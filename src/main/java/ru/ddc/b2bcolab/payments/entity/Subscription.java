@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class Plan {
-    private final String CURRENCY = "RUB";
+public class Subscription {
 
-    private String name;
-    private int amount;
-    private String stripePublicKey;
+    private String userId;
+    private String currentPlan;
+    private LocalDate subscriptionStartDate;
+
 }
