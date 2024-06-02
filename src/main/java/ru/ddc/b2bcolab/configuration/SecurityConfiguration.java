@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/auth/register", "/api/auth/changePass").not().anonymous()
                         .requestMatchers("/api/test/permitAll").permitAll()
                         .requestMatchers("/api/test/roleUserOnly").hasRole("USER")
+                        .requestMatchers("/chat/**", "main.js", "main.css").permitAll()
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
