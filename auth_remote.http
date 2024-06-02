@@ -1,0 +1,30 @@
+### test permitAll
+# @no-log
+GET https://dipdeepcode.ru/api/test/permitAll
+
+### test role user only
+# @no-log
+GET https://dipdeepcode.ru/api/test/roleUserOnly
+
+### create customer
+# @no-log
+POST https://dipdeepcode.ru/api/auth/create
+Content-Type: application/json
+
+{
+  "phoneNumber": "+71231231213",
+  "email": "qwe@qwe.qwe",
+  "password": "pass"
+}
+
+### register customer valid passcode
+# @no-log
+POST https://dipdeepcode.ru/api/auth/register?passcode=4598
+Content-Type: application/x-www-form-urlencoded
+
+### logout
+# @no-log
+POST https://dipdeepcode.ru/api/auth/logout
+
+
+
