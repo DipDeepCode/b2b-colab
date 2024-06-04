@@ -1,0 +1,13 @@
+###
+# @no-log
+POST http://localhost:8080/upload?file=D:\files\image.png
+Content-Type: application/form-data
+
+###
+# @no-log
+POST http://localhost:8080/upload HTTP/1.1
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="ssiidmage.png"
+Content-Type: image/png D:\files\image.png
