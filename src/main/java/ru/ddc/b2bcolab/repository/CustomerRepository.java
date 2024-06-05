@@ -68,8 +68,11 @@ public class CustomerRepository implements CrudRepository<Customer, String> {
     }
 
     @Override
-    public boolean exists(String s) {
-        return false;
+    public boolean exists(String phoneNumber) {
+        return jdbcClient.sql("select exists(select 'x' from customers where phone_number = :phoneNumber)")
+                .param("phoneNumber", phoneNumber)
+                .query(Boolean.class)
+                .single();
     }
 
     public boolean existsByPhoneNumber(String phoneNumber) {
