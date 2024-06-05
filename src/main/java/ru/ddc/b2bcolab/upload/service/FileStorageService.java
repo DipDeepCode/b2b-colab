@@ -1,8 +1,10 @@
 package ru.ddc.b2bcolab.upload.service;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.ddc.b2bcolab.upload.utils.FileUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +13,7 @@ import java.util.stream.Stream;
 
 @Service
 public class FileStorageService implements StorageService {
-    private final Path root = Paths.get("D:\\upload");
+    private final Path root = Paths.get("C:\\Users\\svkovalev\\tmp\\upload");
 
     @Override
     public void init() {
@@ -24,31 +26,38 @@ public class FileStorageService implements StorageService {
 
     @Override
     public void save(MultipartFile file) {
-        try {
-            if (file.isEmpty()) {
-                throw new RuntimeException("File is empty!");
-            }
-            final Path destinationFile = this.root.resolve(Paths.get(file.getOriginalFilename()))
-                    .normalize()
-                    .toAbsolutePath();
-            final Path parentPath = destinationFile.getParent();
-            if (parentPath == null) {
-                throw new RuntimeException("Parent path cannot be null");
-            }
-            if (!parentPath.equals(this.root.toAbsolutePath())) {
-                throw new RuntimeException("Cannot store file outside current directory.");
-            }
-            try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.root, StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to store file.", e);
+        if (file.isEmpty() || file.getOriginalFilename() == null) {
+            throw new RuntimeException("Failed to store empty file.");
+        }
+
+        try (InputStream inputStream = file.getInputStream()) {
+            Path destinationPath = FileUtils.calculatePath(root).normalize().toAbsolutePath();
+            Files.createDirectories(destinationPath);
+            Path destinationFile = FileUtils.calculateFilename(destinationPath, file).normalize().toAbsolutePath();
+            Files.copy(inputStream, destinationFile);
+            System.out.println(destinationFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Resource load(String filename) {
-        return null;
+    public Resource loadAsResource(String filename) {
+        try {
+            Path file = load(filename);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            }
+            else {
+                throw new StorageFileNotFoundException(
+                        "Could not read file: " + filename);
+
+            }
+        }
+        catch (MalformedURLException e) {
+            throw new StorageFileNotFoundException("Could not read file: " + filename, e);
+        }
     }
 
     @Override
