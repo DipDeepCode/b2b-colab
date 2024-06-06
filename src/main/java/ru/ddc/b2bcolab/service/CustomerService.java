@@ -29,6 +29,7 @@ import ru.ddc.b2bcolab.utils.TestPasscodeValidator;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -138,5 +139,29 @@ public class CustomerService {
             SecurityContextHolder.setContext(context);
             contextRepository.saveContext(context, httpServletRequest, httpServletResponse);
         }
+    }
+
+    public Optional<Customer> findCustomerByPhoneNumber(String phoneNumber) {
+        return customerRepository.findByPhoneNumber(phoneNumber);
+    }
+
+    public Optional<Customer> findCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email);
+    }
+
+    public boolean existsByPhoneNumber(String phoneNumber) {
+        return customerRepository.existsByPhoneNumber(phoneNumber);
+    }
+
+    public boolean existsByEmail(String email) {
+        return customerRepository.existsByEmail(email);
+    }
+
+    public int updateCustomer(Customer customer) {
+        return customerRepository.update(customer);
+    }
+
+    public void deleteCustomer(String phoneNumber) {
+        customerRepository.deleteById(phoneNumber);
     }
 }

@@ -15,14 +15,9 @@ import java.util.Optional;
 public class CustomerRepository implements CrudRepository<Customer, String> {
     private final JdbcClient jdbcClient;
 
-    @Transactional
     @Override
-    public Customer save(final Customer model) {
-        jdbcClient.sql("insert into customers(phone_number, email, password, enabled) " +
-                        "values (:phoneNumber, :email, :password, :enabled)")
-                .paramSource(model)
-                .update();
-        return model;
+    public Customer save(Customer model) {
+        return null;
     }
 
     @Override
