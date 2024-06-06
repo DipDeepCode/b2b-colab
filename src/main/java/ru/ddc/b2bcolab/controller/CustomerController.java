@@ -39,15 +39,26 @@ public class CustomerController {
     }
 
 
+    @PostMapping("/save")
+    public ResponseEntity<?> saveCustomer(@RequestBody Customer customer) {
+        Customer savedCustomer = customerService.saveCustomer(customer);
+        return ResponseEntity.ok(savedCustomer);
+    }
+
     @PutMapping("/update/{phoneNumber}")
     public ResponseEntity<?> updateCustomer(@PathVariable String phoneNumber, @RequestBody Customer customer) {
         Integer updatedCustomer = customerService.updateCustomer(customer);
         return ResponseEntity.ok(updatedCustomer);
     }
 
+
     @DeleteMapping("/delete/{phoneNumber}")
     public ResponseEntity<?> deleteCustomer(@PathVariable String phoneNumber) {
-        customerService.deleteCustomer(phoneNumber);
-        return ResponseEntity.noContent().build();
+        int deletedCount = customerService.deleteCustomer(phoneNumber);
+        if (deletedCount > 0) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

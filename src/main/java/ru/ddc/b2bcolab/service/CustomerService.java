@@ -157,11 +157,15 @@ public class CustomerService {
         return customerRepository.existsByEmail(email);
     }
 
+    public Customer saveCustomer(Customer customer) {
+        return customerRepository.save(customer);
+    }
+
     public int updateCustomer(Customer customer) {
         return customerRepository.update(customer);
     }
 
-    public void deleteCustomer(String phoneNumber) {
-        customerRepository.deleteById(phoneNumber);
+    public int deleteCustomer(String phoneNumber) {
+        return customerRepository.deleteById(phoneNumber);
     }
 }

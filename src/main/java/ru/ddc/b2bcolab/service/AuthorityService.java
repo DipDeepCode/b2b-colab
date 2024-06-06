@@ -28,6 +28,10 @@ public class AuthorityService {
         return authorityRepository.findById(phoneNumber);
     }
 
+    public Authority save(Authority authority) {
+        return authorityRepository.save(authority);
+    }
+
     @Transactional
     public Authority updateAuthority(String phoneNumber, Authority authority) {
         if (!authorityRepository.existsById(phoneNumber)) {
