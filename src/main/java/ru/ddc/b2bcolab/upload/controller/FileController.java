@@ -2,35 +2,30 @@ package ru.ddc.b2bcolab.upload.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.ddc.b2bcolab.upload.controller.payload.StoreFileResponse;
 import ru.ddc.b2bcolab.upload.service.StorageService;
 
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/api/files")
 @RequiredArgsConstructor
-public class UploadController {
+public class FileController {
     private final StorageService storageService;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
-        storageService.save(file);
-        return ResponseEntity.ok().build();
+        String store = storageService.store(file);
+        StoreFileResponse storeFileResponse = StoreFileResponse.of(store);
+        return ResponseEntity.ok(storeFileResponse);
     }
 
-    @GetMapping("/{filename:.+}")
+    @GetMapping
     @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-        Resource file = storageService.loadAsResource(filename);
-
-        if (file == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(file);
+    public ResponseEntity<?> getFile(@RequestParam("filename") String filename) {
+        return ResponseEntity.ok(storageService.load(filename));
     }
 }

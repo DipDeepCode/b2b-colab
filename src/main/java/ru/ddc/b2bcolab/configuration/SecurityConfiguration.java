@@ -34,10 +34,10 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/create", "/api/auth/login").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/files/**").permitAll()
                         .requestMatchers("/api/auth/register", "/api/auth/changePass").not().anonymous()
                         .requestMatchers("/api/test/permitAll").permitAll()
                         .requestMatchers("/api/test/roleUserOnly").hasRole("USER")
+                        .requestMatchers("/api/files/**").hasAnyRole("USER", "MODERATOR")
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))

@@ -1,0 +1,28 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="FVDS Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="FVDS Docker">
+    <deployment type="dockerfile">
+      <settings>
+        <option name="imageTag" value="ddc:b2b-colab" />
+        <option name="containerName" value="b2b" />
+        <option name="portBindings">
+          <list>
+            <DockerPortBindingImpl>
+              <option name="containerPort" value="8080" />
+              <option name="hostPort" value="8090" />
+            </DockerPortBindingImpl>
+          </list>
+        </option>
+        <option name="sourceFilePath" value="Dockerfile" />
+        <option name="volumeBindings">
+          <list>
+            <DockerVolumeBindingImpl>
+              <option name="containerPath" value="/apps/b2b-uploads" />
+              <option name="hostPath" value="/upload" />
+            </DockerVolumeBindingImpl>
+          </list>
+        </option>
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>
