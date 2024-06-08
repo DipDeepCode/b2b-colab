@@ -25,6 +25,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@CrossOrigin(
+        origins = {"http://localhost:8080", "http://localhost:3000", "https://w2w-project-site.vercel.app"},
+        allowCredentials = "true")
 public class AuthController {
     private final CustomerService customerService;
 
@@ -37,7 +40,6 @@ public class AuthController {
                     responseCode = "400",
                     description = "Запрос не прошел валидацию")
     })
-    @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<?> createCustomer(@Valid @RequestBody RegisterCustomerRequest request,
                                             BindingResult bindingResult,
@@ -56,7 +58,6 @@ public class AuthController {
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен, указан неверный проверочный код")
     })
-    @CrossOrigin
     @PostMapping("/register")
     public ResponseEntity<?> registerCustomer(@RequestParam String passcode,
                                               HttpServletRequest httpServletRequest,
@@ -75,7 +76,6 @@ public class AuthController {
                     description = "Доступ к запрошенному ресурсу запрещен, указан неверный логин или пароль"
             )
     })
-    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request,
                                    HttpServletRequest httpServletRequest,
@@ -93,7 +93,6 @@ public class AuthController {
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен")
     })
-    @CrossOrigin
     @PatchMapping("/changePass")
     public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request,
                                             BindingResult bindingResult,
@@ -109,7 +108,6 @@ public class AuthController {
                     responseCode = "200",
                     description = "Успешный выход")
     })
-    @CrossOrigin
     @PostMapping("/logout")
     public void fakeLogout() {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
@@ -124,7 +122,6 @@ public class AuthController {
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен, пользователь не аутентифицирован")
     })
-    @CrossOrigin
     @GetMapping("/authorities")
     public ResponseEntity<?> getAuthorities() {
         return ResponseEntity.ok(customerService.getAuthorities());

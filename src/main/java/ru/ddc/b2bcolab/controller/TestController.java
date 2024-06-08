@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/test")
+@CrossOrigin(
+        origins = {"http://localhost:8080", "http://localhost:3000", "https://w2w-project-site.vercel.app"},
+        allowCredentials = "true")
 public class TestController {
 
 
@@ -18,7 +21,6 @@ public class TestController {
     @ApiResponse(
             responseCode = "200",
             description = "Успешный запрос") //TODO добавить content
-    @CrossOrigin
     @GetMapping("/permitAll")
     public String when_any_request_then_test_ok() {
         return "test ok";
@@ -34,7 +36,6 @@ public class TestController {
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен, пользователь не аутентифицирован")
     })
-    @CrossOrigin
     @GetMapping("/roleUserOnly")
     public String when_user_request_then_test_ok() {
         return "test ok";
