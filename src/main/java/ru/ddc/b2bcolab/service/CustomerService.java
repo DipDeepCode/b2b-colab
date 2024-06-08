@@ -68,6 +68,7 @@ public class CustomerService {
     public void registerCustomer(String passcode,
                                  HttpServletRequest httpServletRequest,
                                  HttpServletResponse httpServletResponse) {
+        System.out.println("THERE");
         SecurityContext context = SecurityContextHolder.getContext();
         if (passcodeValidator.validate(passcode)) {
             Authentication authentication = context.getAuthentication();
