@@ -37,7 +37,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/auth/register", "/api/auth/changePass").not().anonymous()
                         .requestMatchers("/api/test/permitAll").permitAll()
                         .requestMatchers("/api/test/roleUserOnly").hasRole("USER")
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api/payments/charge", "/api/payments/plans", "/api/payments/upgrade").permitAll()
+                                .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
                         .logoutSuccessHandler(
@@ -71,4 +72,5 @@ public class SecurityConfiguration {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
+
 }

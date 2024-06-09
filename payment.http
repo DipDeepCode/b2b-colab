@@ -1,0 +1,29 @@
+### get lite tariff
+# @no-log
+GET http://localhost:8080/api/payments/plans/lite
+
+### get comfort tariff
+# @no-log
+GET http://localhost:8080/api/payments/plans/comfort
+
+### get business tariff
+# @no-log
+GET http://localhost:8080/api/payments/plans/business
+
+
+
+### payment
+# @no-log
+POST http://localhost:8080/api/payments/charge
+Content-Type: application/json
+
+{
+  "description": "Payment for subscription",
+  "amount": 1000000,
+  "currency": "RUB",
+  "stripeEmail": "sdfsdfsd@mail.com",
+  "stripeToken": "tok_visa"
+}
+
+
+

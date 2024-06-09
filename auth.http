@@ -4,8 +4,8 @@ POST http://localhost:8080/api/auth/create
 Content-Type: application/json
 
 {
-  "phoneNumber": "+71231231213",
-  "email": "qwe@qwe.qwe",
+  "phoneNumber": "+71231231220",
+  "email": "qwe@qwe20.qwe",
   "password": "pass"
 }
 
@@ -25,7 +25,7 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "phoneNumberOrEmail": "+71231231213",
+  "phoneNumberOrEmail": "+71231231220",
   "password": "pass"
 }
 

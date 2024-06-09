@@ -22,3 +22,7 @@ CREATE TABLE authority
 COMMENT ON TABLE authority IS 'Таблица ролей пользователя';
 COMMENT ON COLUMN authority.phone_number IS 'Внешний ключ на таблицу customers';
 COMMENT ON COLUMN authority.role IS 'Роль пользователя';
+
+
+INSERT INTO customers (phone_number, email, password, enabled)
+VALUES ('+1234567890', 'user@example.com', 'hashed_password', true);
