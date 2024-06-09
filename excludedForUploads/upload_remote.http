@@ -1,0 +1,22 @@
+###
+
+# @name send file
+# @no-log
+POST https://dipdeepcode.ru/api/files
+Content-Type: multipart/form-data; boundary=WebBoundary
+
+--WebBoundary
+Content-Disposition: form-data; name="file"; filename="image.png"
+Content-Type: image/png
+
+< D:\files\image.png
+
+###
+# @name get file
+# @no-log
+@filename = ZmUvZGQvZmYvQ0VCMTZCQjBCQTdGMUQyRkIyNENCRDgxOENENzEwQkEucG5n
+GET https://dipdeepcode.ru/api/files?filename={{filename}}
+
+
+
+

@@ -1,0 +1,21 @@
+###
+# @name send file
+# @no-log
+POST http://localhost:8080/api/files
+Content-Type: multipart/form-data; boundary=WebBoundary
+
+--WebBoundary
+Content-Disposition: form-data; name="file"; filename="ssiidmage.png"
+Content-Type: image/png
+
+< D:\files\image.png
+
+###
+# @name get file
+# @no-log
+@filename = ODkvYjIvOWMvc3NpaWRtYWdlLnBuZw==
+GET http://localhost:8080/api/files?filename={{filename}}
+
+
+
+
