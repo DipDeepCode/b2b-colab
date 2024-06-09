@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Objects;
 
 public class FileUtils {
 
@@ -23,15 +24,7 @@ public class FileUtils {
     }
 
     public static Path calculateFilename(Path root, MultipartFile file) {
-        try {
-            String originalFilename = file.getOriginalFilename();
-            assert originalFilename != null;
-            String md5Hex = DigestUtils.md5Hex(file.getBytes()).toUpperCase();
-            String extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
-            return root.resolve(Paths.get(md5Hex + extension));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            return root.resolve(Paths.get(Objects.requireNonNull(file.getOriginalFilename())));
     }
 
     public static String encodePathToBase64(Path path) {

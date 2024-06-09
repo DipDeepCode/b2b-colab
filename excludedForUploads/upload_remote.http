@@ -14,7 +14,7 @@ Content-Type: image/png
 ###
 # @name get file
 # @no-log
-@filename = ZmUvZGQvZmYvQ0VCMTZCQjBCQTdGMUQyRkIyNENCRDgxOENENzEwQkEucG5n
+@filename = MjQvMmYvNDkvc3NpaWRtYWdlLnBuZw==
 GET https://dipdeepcode.ru/api/files?filename={{filename}}
 
 

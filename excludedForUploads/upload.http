@@ -1,7 +1,7 @@
 ###
 # @name send file
 # @no-log
-POST http://localhost:8081/api/files
+POST http://localhost:8080/api/files
 Content-Type: multipart/form-data; boundary=WebBoundary
 
 --WebBoundary
@@ -13,8 +13,8 @@ Content-Type: image/png
 ###
 # @name get file
 # @no-log
-@filename = YWIvMjUvZDYvQ0VCMTZCQjBCQTdGMUQyRkIyNENCRDgxOENENzEwQkEucG5n
-GET http://localhost:8081/api/files?filename={{filename}}
+@filename = MjQvMmYvNDkvc3NpaWRtYWdlLnBuZw==
+GET http://localhost:8080/api/files?filename={{filename}}
 
 
 
