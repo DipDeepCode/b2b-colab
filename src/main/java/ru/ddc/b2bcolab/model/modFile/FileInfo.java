@@ -17,5 +17,4 @@ public class FileInfo {
 
     private String key;
 
-//    private LocalDate uploadDate;
 }
