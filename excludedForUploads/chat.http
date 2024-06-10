@@ -1,0 +1,4 @@
+###
+# @name get chat rooms by phone number
+# @no-log
+GET http://localhost:8080/api/chat?phoneNumber=%2B71231231211
