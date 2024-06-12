@@ -4,8 +4,15 @@ import lombok.Data;
 
 @Data
 public class UpgradeRequest {
+
+    public enum Currency {
+        RUB, USD;
+    }
+    private String userEmail;
     private String currentPlan;
     private String newPlan;
-    private String stripeCustomerId;
-    private String userId;
+    private String stripeToken;
+    private int amount;
+    private String description;
+    private Currency currency;
 }

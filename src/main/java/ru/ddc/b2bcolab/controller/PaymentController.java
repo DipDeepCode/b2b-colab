@@ -2,6 +2,8 @@ package ru.ddc.b2bcolab.controller;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -9,15 +11,20 @@ import org.springframework.web.bind.annotation.*;
 import ru.ddc.b2bcolab.controller.payload.ChargeRequest;
 import ru.ddc.b2bcolab.controller.payload.ChargeResponse;
 import ru.ddc.b2bcolab.controller.payload.UpgradeRequest;
-import ru.ddc.b2bcolab.model.Plan;
+import ru.ddc.b2bcolab.model.Tariff;
 import ru.ddc.b2bcolab.model.Subscription;
 import ru.ddc.b2bcolab.service.StripeService;
 import ru.ddc.b2bcolab.service.SubscriptionService;
+
+import java.util.Optional;
+
 
 
 @RestController
 @RequestMapping("/api/payments")
 public class PaymentController {
+
+    Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
     @Value("${STRIPE_PUBLIC_KEY}")
     private String stripePublicKey;
@@ -29,28 +36,61 @@ public class PaymentController {
     private SubscriptionService subscriptionService;
 
     @GetMapping("/plans/lite")
-    public ResponseEntity<Plan> getLitePlan() {
-        Plan plan = new Plan("Lite", 1200000, stripePublicKey);
-        return ResponseEntity.ok(plan);
+    public ResponseEntity<Tariff> getLitePlan() {
+        Tariff liteTariff = new Tariff( "Lite Match",
+                true,
+                true,
+                true,
+                true,
+                false,
+                false,
+                false,
+                false,
+                12000,
+                "1 год");
+        return ResponseEntity.ok(liteTariff);
     }
 
     @GetMapping("/plans/comfort")
-    public ResponseEntity<Plan> getComfortPlan() {
-        Plan plan = new Plan("Comfort", 2400000, stripePublicKey);
-        return ResponseEntity.ok(plan);
+    public ResponseEntity<Tariff> getComfortPlan() {
+        Tariff comfortTariff = new Tariff(
+                "Comfort Match",
+                true,
+                true,
+                true,
+                true,
+                true,
+                false,
+                false,
+                true,
+                24000,
+                "1 год"
+        );
+        return ResponseEntity.ok(comfortTariff);
     }
 
     @GetMapping("/plans/business")
-    public ResponseEntity<Plan> getBusinnesPlan() {
-        Plan plan = new Plan("Business", 6000000, stripePublicKey);
-        return ResponseEntity.ok(plan);
+    public ResponseEntity<Tariff> getBusinessPlan() {
+        Tariff businessTariff = new Tariff(
+                "Business Match",
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                60000,
+                "1 год"
+        );
+        return ResponseEntity.ok(businessTariff);
     }
 
     @PostMapping("/charge")
     public ResponseEntity<?> createCharge(@RequestBody ChargeRequest chargeRequest) throws StripeException {
-        chargeRequest.setDescription("Example charge");
         chargeRequest.setCurrency(ChargeRequest.Currency.RUB);
-        Charge charge = paymentsService.charge(chargeRequest);
+        Charge charge = paymentsService.handleChargeAndSubscription(chargeRequest);
         return ResponseEntity.ok(new ChargeResponse(
                 charge.getId(),
                 charge.getStatus(),
@@ -59,17 +99,17 @@ public class PaymentController {
         ));
     }
 
-
     @PostMapping("/upgrade")
-    public ResponseEntity<Charge> upgradePlan(@RequestBody UpgradeRequest upgradeRequest) throws StripeException {
-
-        Subscription subscription = subscriptionService.getSubscriptionByUserId(upgradeRequest.getUserId());
-        if (subscription == null) {
+    public ResponseEntity<?> upgradePlan(@RequestBody UpgradeRequest upgradeRequest) throws StripeException {
+        logger.info("Received upgrade request: {}", upgradeRequest);
+        Optional<Subscription> subscriptionOpt = subscriptionService.getSubscriptionByEmail(upgradeRequest.getUserEmail());
+        if (subscriptionOpt.isEmpty()) {
             return ResponseEntity.badRequest().body(null);
         }
 
-        Charge charge = paymentsService.upgradePlan(subscription, upgradeRequest);
-        return ResponseEntity.ok(charge);
+        Subscription subscription = subscriptionOpt.get();
+        paymentsService.upgradeSubscription(subscription, upgradeRequest);
+        return ResponseEntity.ok("Subscription upgraded successfully");
     }
-
 }
+

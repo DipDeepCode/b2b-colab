@@ -1,0 +1,40 @@
+### get lite tariff
+# @no-log
+GET https://dipdeepcode.ru/api/payments/plans/lite
+
+### get comfort tariff
+# @no-log
+GET https://dipdeepcode.ru/api/payments/plans/comfort
+
+### get business tariff
+# @no-log
+GET https://dipdeepcode.ru/api/payments/plans/business
+
+
+
+### buy subscription
+# @no-log
+POST https://dipdeepcode.ru/api/payments/charge
+Content-Type: application/json
+
+{
+  "description": "Lite Match",
+  "amount": 2400000,
+  "currency": "RUB",
+  "stripeEmail": "qwe@qwe29.qwe",
+  "stripeToken": "tok_visa"
+}
+
+### update subscription
+# @no-log
+POST https://dipdeepcode.ru/api/payments/upgrade
+Content-Type: application/json
+
+{
+  "userEmail": "qwe@qwe29.qwe",
+  "currentPlan": "Comfort Match",
+  "newPlan": "Comfort Match",
+  "description": "Upgrading",
+  "currency": "RUB",
+  "stripeToken": "tok_visa"
+}

@@ -20,6 +20,12 @@ public class SubscriptionService {
         return subscription.orElse(null); // Возвращаем null, если подписка не найдена
     }
 
+    public Optional<Subscription> getSubscriptionByEmail(String email) {
+        return subscriptionRepository.findByEmail(email);
+    }
+
+
+
     public void saveSubscription(Subscription subscription) {
         subscriptionRepository.save(subscription);
     }

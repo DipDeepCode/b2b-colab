@@ -4,9 +4,9 @@ POST http://localhost:8080/api/auth/create
 Content-Type: application/json
 
 {
-  "phoneNumber": "+71231231220",
-  "email": "qwe@qwe20.qwe",
-  "password": "pass"
+  "phoneNumber": "+71231231229",
+  "email": "qwe@qwe29.qwe",
+  "password": "pass29"
 }
 
 ### register customer valid passcode
@@ -25,8 +25,8 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "phoneNumberOrEmail": "+71231231220",
-  "password": "pass"
+  "phoneNumberOrEmail": "+71231231229",
+  "password": "pass29"
 }
 
 ### change password
