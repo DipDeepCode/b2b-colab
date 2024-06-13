@@ -58,8 +58,8 @@ public class AuthorityRepository {
     }
 
     @Transactional
-    public void deleteById(String phoneNumber) {
-        jdbcClient.sql("delete from authority where phone_number = :phoneNumber")
+    public int deleteById(String phoneNumber) {
+        return jdbcClient.sql("delete from authority where phone_number = :phoneNumber")
                 .param("phoneNumber", phoneNumber)
                 .update();
     }

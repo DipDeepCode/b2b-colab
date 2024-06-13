@@ -141,6 +141,11 @@ public class CustomerService {
         }
     }
 
+    public List<Customer> findAllCustomer() {
+        return customerRepository.findAll();
+    }
+
+
     public Optional<Customer> findCustomerByPhoneNumber(String phoneNumber) {
         return customerRepository.findByPhoneNumber(phoneNumber);
     }
@@ -149,23 +154,29 @@ public class CustomerService {
         return customerRepository.findByEmail(email);
     }
 
-    public boolean existsByPhoneNumber(String phoneNumber) {
-        return customerRepository.existsByPhoneNumber(phoneNumber);
-    }
-
-    public boolean existsByEmail(String email) {
-        return customerRepository.existsByEmail(email);
-    }
 
     public Customer saveCustomer(Customer customer) {
+        for (Authority authority : customer.getCustomerAuthorities()) {
+            customerRepository.addAuthorities(customer, authority);
+        }
         return customerRepository.save(customer);
     }
 
     public int updateCustomer(Customer customer) {
+        for (Authority authority : customer.getCustomerAuthorities()) {
+            customerRepository.addAuthorities(customer, authority);
+        }
         return customerRepository.update(customer);
     }
 
     public int deleteCustomer(String phoneNumber) {
-        return customerRepository.deleteById(phoneNumber);
+        // Удаляем записи из таблицы Authority
+        int deletedAuthorities = authorityRepository.deleteById(phoneNumber);
+
+        // Удаляем клиента из таблицы Customer
+        int deletedCustomers = customerRepository.deleteById(phoneNumber);
+
+        // Возвращаем общее количество удаленных записей
+        return deletedAuthorities + deletedCustomers;
     }
 }

@@ -24,12 +24,15 @@ public class CustomerRepository implements CrudRepository<Customer, String> {
                 .param("enabled", customer.isEnabled())
                 .update();
 
-        for (Authority authority : customer.getCustomerAuthorities()) {
-            jdbcClient.sql("insert into customer_authorities (customer_phone_number, authority_role) values (:phoneNumber, :role)")
-                    .param("phoneNumber", customer.getPhoneNumber())
-                    .param("role", authority.getRole().toString())
-                    .update();
-        }
+        return customer;
+    }
+
+    public Customer addAuthorities(Customer customer, Authority authority) {
+        jdbcClient.sql("insert into authority (customer_phone_number, authority_role) values (:phoneNumber, :role)")
+                .param("phoneNumber", customer.getPhoneNumber())
+                .param("role", authority.getRole().toString())
+                .update();
+
         return customer;
     }
 

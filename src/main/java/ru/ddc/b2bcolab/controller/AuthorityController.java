@@ -1,55 +1,88 @@
 package ru.ddc.b2bcolab.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ddc.b2bcolab.model.Authority;
-import ru.ddc.b2bcolab.repository.AuthorityRepository;
+import ru.ddc.b2bcolab.service.AuthorityService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/authorities")
+// @RequestMapping("/authorities")
 @RequiredArgsConstructor
+@Tag(name = "Authority Controller", description = "Контроллер для работы с правами доступа")
 public class AuthorityController {
-    private final AuthorityRepository authorityRepository;
+    private final AuthorityService authorityService;
 
+    @Operation(summary = "Сохранение права доступа")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Право доступа успешно сохранено"),
+            @ApiResponse(responseCode = "400", description = "Неверный запрос")
+    })
     @PostMapping
-    public ResponseEntity<Authority> createAuthority(@RequestBody Authority authority) {
-        Authority savedAuthority = authorityRepository.save(authority);
+    public ResponseEntity<Authority> saveAuthority(@RequestBody Authority authority) {
+        Authority savedAuthority = authorityService.save(authority);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAuthority);
     }
 
-    @GetMapping("/get")
+    @Operation(summary = "Получение всех прав доступа")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список прав доступа успешно получен"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    @GetMapping("/customers/authorities")
     public ResponseEntity<List<Authority>> getAllAuthorities() {
-        List<Authority> authorities = authorityRepository.findAll();
+        List<Authority> authorities = authorityService.getAllAuthorities();
         return ResponseEntity.ok(authorities);
     }
 
-    @GetMapping("/get/phone/{phoneNumber}")
-    public ResponseEntity<Authority> getAuthorityByPhoneNumber(@PathVariable String phoneNumber) {
-        return authorityRepository.findById(phoneNumber)
+    @Operation(summary = "Получение права доступа по номеру телефона")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Право доступа успешно получено"),
+            @ApiResponse(responseCode = "404", description = "Право доступа не найдено"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    @GetMapping("/customers/{phoneNumber}/authorities")
+    public ResponseEntity<Authority> getAuthorityByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) {
+        return authorityService.getAuthorityByPhoneNumber(phoneNumber)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/update/{phoneNumber}")
+    @Operation(summary = "Обновление права доступа по номеру телефона")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Право доступа успешно обновлено"),
+            @ApiResponse(responseCode = "404", description = "Право доступа не найдено"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    @PutMapping("{phoneNumber}")
     public ResponseEntity<Authority> updateAuthority(@PathVariable String phoneNumber, @RequestBody Authority authority) {
-        if (!authorityRepository.existsById(phoneNumber)) {
+        if (!authorityService.existsById(phoneNumber)) {
             return ResponseEntity.notFound().build();
         }
         authority.setPhoneNumber(phoneNumber);
-        Authority updatedAuthority = authorityRepository.save(authority);
+        Authority updatedAuthority = authorityService.save(authority);
         return ResponseEntity.ok(updatedAuthority);
     }
 
-    @DeleteMapping("/delete/{phoneNumber}")
+    @Operation(summary = "Удаление права доступа по номеру телефона")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Право доступа успешно удалено"),
+            @ApiResponse(responseCode = "404", description = "Право доступа не найдено"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    @DeleteMapping("{phoneNumber}")
     public ResponseEntity<Void> deleteAuthority(@PathVariable String phoneNumber) {
-        if (!authorityRepository.existsById(phoneNumber)) {
+        if (!authorityService.existsById(phoneNumber)) {
             return ResponseEntity.notFound().build();
         }
-        authorityRepository.deleteById(phoneNumber);
+        authorityService.deleteAuthority(phoneNumber);
         return ResponseEntity.noContent().build();
     }
 }

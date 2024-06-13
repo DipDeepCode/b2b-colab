@@ -15,11 +15,6 @@ public class AuthorityService {
 
     private final AuthorityRepository authorityRepository;
 
-    @Transactional
-    public Authority createAuthority(Authority authority) {
-        return authorityRepository.save(authority);
-    }
-
     public List<Authority> getAllAuthorities() {
         return authorityRepository.findAll();
     }
@@ -28,17 +23,20 @@ public class AuthorityService {
         return authorityRepository.findById(phoneNumber);
     }
 
+    public boolean existsById(String phoneNumber) {
+        return authorityRepository.existsById(phoneNumber);
+    }
+    @Transactional
     public Authority save(Authority authority) {
         return authorityRepository.save(authority);
     }
 
     @Transactional
-    public Authority updateAuthority(String phoneNumber, Authority authority) {
+    public int updateAuthority(String phoneNumber, Authority authority) {
         if (!authorityRepository.existsById(phoneNumber)) {
             throw new RuntimeException("Authority with phone number " + phoneNumber + " not found");
         }
-        authority.setPhoneNumber(phoneNumber);
-        return authorityRepository.save(authority);
+        return authorityRepository.update(authority);
     }
 
     @Transactional
