@@ -26,5 +26,15 @@ Content-Type: application/x-www-form-urlencoded
 # @no-log
 POST https://dipdeepcode.ru/api/auth/logout
 
+###
+# @name login
+# @no-log
+POST https://dipdeepcode.ru/api/auth/login
+Content-Type: application/json
+
+{
+  "phoneNumberOrEmail": "+71231231213",
+  "password": "pass"
+}
 
 
