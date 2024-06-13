@@ -1,4 +1,4 @@
-package ru.ddc.b2bcolab.upload.utils;
+package ru.ddc.b2bcolab.utils;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
