@@ -1,43 +1,24 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
+@Description("Класс Tariff представляет собой модель данных для тарифного плана, предлагаемого системой. " +
+        "Он содержит информацию о различных функциях и возможностях, доступных в рамках тарифа, " +
+        "а также о цене и периоде действия тарифа.")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
+@ToString
 public class Tariff {
-    private long id;
-    private Role name_tariff;
-    private boolean telegram;
-    private boolean access_to_lc;
-    private boolean brand_catalog;
-    private boolean telegram_tags;
-    private boolean telegram_likes;
-    private boolean modern_collab;
-    private boolean selection_brandsOT;
-    private boolean message;
-    private double price;
-    private String period;
-
-    @Override
-    public String toString() {
-        return "Tariff{" +
-                "id=" + id +
-                ", name_tariff=" + name_tariff +
-                ", telegram=" + telegram +
-                ", access_to_lc=" + access_to_lc +
-                ", brand_catalog=" + brand_catalog +
-                ", telegram_tags=" + telegram_tags +
-                ", telegram_likes=" + telegram_likes +
-                ", modern_collab=" + modern_collab +
-                ", selection_brandsOT=" + selection_brandsOT +
-                ", message=" + message +
-                ", price=" + price +
-                ", period='" + period + '\'' +
-                '}';
-    }
+    private Long tariffId; // Уникальный идентификатор тарифа.
+    private String name;  // Описание тарифа, предоставляющее более подробную информацию о его функциях и возможностях.
+    private String description; // Описание тарифа, предоставляющее более подробную информацию о его функциях и возможностях.
+    private BigDecimal price;  // Цена тарифа, выраженная в десятичном формате с двумя знаками после запятой.
+    private LocalDateTime startDate;  // Дата начала действия тарифа.
+    private LocalDateTime endDate; // Дата окончания действия тарифа.
+    private LocalDateTime createdAt; // Дата и время создания записи о тарифе в системе.
+    private LocalDateTime updatedAt; // Дата и время последнего обновления записи о тарифе в системе.
 }

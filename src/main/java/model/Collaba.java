@@ -1,28 +1,18 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Description("Класс Collaba представляет собой модель данных для коллаборации между брендами. " +
+        "Он содержит информацию о коллаборации, включая идентификатор коллаборации, " +
+        "с кем происходит коллаборация, идентификатор и ссылку на бренд, участвующий в коллаборации.")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Collaba {
-    private long id;
-    private String with_whom;
-    private long brand_id;
-    private Brand brand; // Связь с Brand
-
-
-    @Override
-    public String toString() {
-        return "Collaba{" +
-                "id=" + id +
-                ", with_whom='" + with_whom + '\'' +
-                ", brand_id=" + brand_id +
-                ", brand=" + brand +
-                '}';
-    }
+    private long id; // Уникальный идентификатор коллаборации
+    private String withWhom; // Информация о том, с кем происходит коллаборация
+    private long brandId; // Идентификатор бренда, участвующего в коллаборации
+    private Brand brand; // Связь с классом Brand, представляющим бренд, участвующий в коллаборации
 }

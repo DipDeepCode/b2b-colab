@@ -1,58 +1,34 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
-
+@Description("Класс Brand представляет собой модель данных для бренда. Он содержит информацию о бренде," +
+        " такую как его название, социальные медиа ссылки, целевая аудитория, контактные данные, " +
+        "а также статистику и взаимосвязи с другими сущностями в системе, такими как коллаборации, " +
+        "   лайки и клиенты.")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Brand {
-    private long id;
-    private String name;
-    private String social_media_link;
-    private String brand_values_character;
-    private String target_audience;
-    private String contact_person_name;
-    private String founder_interests;
-    private String category;
-    private int subscriber_count;
-    private String geo;
-    private int count_ball;
-    private long count_like;
-    private String username_id;
-    private long tariff_id;
-    private Customer customer; // Связь с Customer
-    private Set<Collaba> collabas = new HashSet<>(); // Множественные коллаборации
-    private Set<Like> likesGiven = new HashSet<>(); // Лайки, которые бренд поставил
-    private Set<Like> likesReceived = new HashSet<>(); // Лайки, которые бренд получил
-
-
-    @Override
-    public String toString() {
-        return "Brand{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", social_media_link='" + social_media_link + '\'' +
-                ", brand_values_character='" + brand_values_character + '\'' +
-                ", target_audience='" + target_audience + '\'' +
-                ", contact_person_name='" + contact_person_name + '\'' +
-                ", founder_interests='" + founder_interests + '\'' +
-                ", category='" + category + '\'' +
-                ", subscriber_count=" + subscriber_count +
-                ", geo='" + geo + '\'' +
-                ", count_ball=" + count_ball +
-                ", count_like=" + count_like +
-                ", username_id='" + username_id + '\'' +
-                ", tariff_id=" + tariff_id +
-                ", customer=" + customer +
-                ", collabas=" + collabas +
-                ", likesGiven=" + likesGiven +
-                ", likesReceived=" + likesReceived +
-                '}';
-    }
+    private long id; // Уникальный идентификатор бренда
+    private String name; // Название бренда
+    private String social_media_link; // Ссылка на социальные медиа бренда
+    private String brand_values_character; // Характеристика ценностей бренда
+    private String target_audience; // Целевая аудитория бренда
+    private String contact_person_name; // Имя контактного лица бренда
+    private String founder_interests; // Интересы основателя бренда
+    private String category; // Категория бренда
+    private int subscriber_count; // Количество подписчиков бренда
+    private String geo; // Географическое положение бренда
+    private int count_ball; // Количество баллов бренда
+    private long count_like; // Количество лайков бренда
+    private String username_id; // Идентификатор пользователя бренда
+    private long tariff_id; // Идентификатор тарифа бренда
+    private Customer customer; // Связь с классом Customer, представляющим клиента бренда
+    private Set<Collaba> collabas = new HashSet<>(); // Множество коллабораций, в которых участвует бренд
+    private Set<Like> likesGiven = new HashSet<>(); // Множество лайков, которые бренд поставил другим
+    private Set<Like> likesReceived = new HashSet<>(); // Множество лайков, которые бренд получил от других
 }
