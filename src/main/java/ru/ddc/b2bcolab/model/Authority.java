@@ -10,4 +10,9 @@ import lombok.*;
 public class Authority {
     private String phoneNumber;
     private Role role;
+
+
+    public Authority build() {
+        return new Authority(this.phoneNumber, this.role);
+    }
 }

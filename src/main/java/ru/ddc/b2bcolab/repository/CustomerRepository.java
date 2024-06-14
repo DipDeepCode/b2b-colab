@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import ru.ddc.b2bcolab.model.Authority;
 import ru.ddc.b2bcolab.model.Customer;
 
 import java.util.List;
@@ -15,19 +15,33 @@ import java.util.Optional;
 public class CustomerRepository implements CrudRepository<Customer, String> {
     private final JdbcClient jdbcClient;
 
-    @Transactional
     @Override
-    public Customer save(final Customer model) {
-        jdbcClient.sql("insert into customers(phone_number, email, password, enabled) " +
-                        "values (:phoneNumber, :email, :password, :enabled)")
-                .paramSource(model)
+    public Customer save(Customer customer) {
+        jdbcClient.sql("insert into customers (phone_number, email, password, enabled) values (:phoneNumber, :email, :password, :enabled)")
+                .param("phoneNumber", customer.getPhoneNumber())
+                .param("email", customer.getEmail())
+                .param("password", customer.getPassword())
+                .param("enabled", customer.isEnabled())
                 .update();
-        return model;
+
+        return customer;
     }
+
+    public Customer addAuthorities(Customer customer, Authority authority) {
+        jdbcClient.sql("insert into authority (customer_phone_number, authority_role) values (:phoneNumber, :role)")
+                .param("phoneNumber", customer.getPhoneNumber())
+                .param("role", authority.getRole().toString())
+                .update();
+
+        return customer;
+    }
+
 
     @Override
     public List<Customer> findAll() {
-        return List.of();
+        return jdbcClient.sql("select * from customers")
+                .query(new BeanPropertyRowMapper<>(Customer.class))
+                .list();
     }
 
     @Override
@@ -57,14 +71,19 @@ public class CustomerRepository implements CrudRepository<Customer, String> {
 
     @Override
     public int update(Customer customer) {
-        return jdbcClient.sql("update customers set email = :email, password = :password where phone_number = :phoneNumber")
-                .paramSource(customer)
+        return jdbcClient.sql("update customers set email = :email, password = :password, enabled = :enabled where phone_number = :phoneNumber")
+                .param("phoneNumber", customer.getPhoneNumber())
+                .param("email", customer.getEmail())
+                .param("password", customer.getPassword())
+                .param("enabled", customer.isEnabled())
                 .update();
     }
 
     @Override
-    public int deleteById(String id) {
-        return 0;
+    public int deleteById(String phoneNumber) {
+        return jdbcClient.sql("delete from customers where phone_number = :phoneNumber")
+                .param("phoneNumber", phoneNumber)
+                .update();
     }
 
     @Override

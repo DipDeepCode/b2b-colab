@@ -6,33 +6,25 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ddc.b2bcolab.model.Authority;
-
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class AuthorityRepository implements CrudRepository<Authority, String> {
+public class AuthorityRepository {
     private final JdbcClient jdbcClient;
 
-    @Transactional
-    @Override
-    public Authority save(final Authority authority) {
-        jdbcClient.sql("insert into authority (phone_number, role) values (:phoneNumber, :role)")
-                .param("phoneNumber", authority.getPhoneNumber())
-                .param("role", authority.getRole().toString())
-                .update();
-        return authority;
-    }
-
-    @Override
     public List<Authority> findAll() {
-        return List.of();
+        return jdbcClient.sql("select * from authority")
+                .query(new BeanPropertyRowMapper<>(Authority.class))
+                .list();
     }
 
-    @Override
-    public Optional<Authority> findById(String id) {
-        return Optional.empty();
+    public Optional<Authority> findById(String phoneNumber) {
+        return jdbcClient.sql("select * from authority where phone_number = :phoneNumber")
+                .param("phoneNumber", phoneNumber)
+                .query(new BeanPropertyRowMapper<>(Authority.class))
+                .optional();
     }
 
     public List<Authority> findAllByPhoneNumber(String phoneNumber) {
@@ -42,20 +34,33 @@ public class AuthorityRepository implements CrudRepository<Authority, String> {
                 .list();
     }
 
+    public boolean existsById(String phoneNumber) {
+        return jdbcClient.sql("select count(*) from authority where phone_number = :phoneNumber")
+                .param("phoneNumber", phoneNumber)
+                .query(rs -> rs.next() && rs.getInt(1) > 0);
+    }
+
     @Transactional
-    @Override
     public int update(Authority authority) {
-        return 0;
+        return jdbcClient.sql("update authority set role = :role where phone_number = :phoneNumber")
+                .param("phoneNumber", authority.getPhoneNumber())
+                .param("role", authority.getRole().toString())
+                .update();
     }
 
     @Transactional
-    @Override
-    public int deleteById(String id) {
-        return 0;
+    public Authority save(final Authority authority) {
+        jdbcClient.sql("insert into authority (phone_number, role) values (:phoneNumber, :role)")
+                .param("phoneNumber", authority.getPhoneNumber())
+                .param("role", authority.getRole().toString())
+                .update();
+        return authority;
     }
 
-    @Override
-    public boolean exists(String id) {
-        return false;
+    @Transactional
+    public int deleteById(String phoneNumber) {
+        return jdbcClient.sql("delete from authority where phone_number = :phoneNumber")
+                .param("phoneNumber", phoneNumber)
+                .update();
     }
 }
