@@ -1,27 +1,17 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class Like {
-    private long id;
-    private String from_the_brand;
-    private String to_the_brand;
-    private long brand_id;
-
-    @Override
-    public String toString() {
-        return "Like{" +
-                "id=" + id +
-                ", from_the_brand='" + from_the_brand + '\'' +
-                ", to_the_brand='" + to_the_brand + '\'' +
-                ", brand_id=" + brand_id +
-                '}';
-    }
+    private long id; // Уникальный идентификатор лайка
+    private LocalDateTime timestamp; // Время, когда был поставлен лайк
+    private Brand from_the_brand; // Связь с Brand
+    private Brand to_the_brand; // Связь с Brand
 }

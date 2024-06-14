@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,11 +26,10 @@ public class Brand {
     private long count_like;
     private String username_id;
     private long tariff_id;
-
-
-
-
-
+    private Customer customer; // Связь с Customer
+    private Set<Collaba> collabas = new HashSet<>(); // Множественные коллаборации
+    private Set<Like> likesGiven = new HashSet<>(); // Лайки, которые бренд поставил
+    private Set<Like> likesReceived = new HashSet<>(); // Лайки, которые бренд получил
 
 
     @Override
@@ -46,8 +47,12 @@ public class Brand {
                 ", geo='" + geo + '\'' +
                 ", count_ball=" + count_ball +
                 ", count_like=" + count_like +
-                ", username_id=" + username_id +
+                ", username_id='" + username_id + '\'' +
                 ", tariff_id=" + tariff_id +
+                ", customer=" + customer +
+                ", collabas=" + collabas +
+                ", likesGiven=" + likesGiven +
+                ", likesReceived=" + likesReceived +
                 '}';
     }
 }
