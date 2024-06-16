@@ -12,73 +12,72 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.ddc.b2bcolab.controller.payload.CreateBrandRequest;
-import ru.ddc.b2bcolab.model.Brand;
-import ru.ddc.b2bcolab.service.BrandService;
+import ru.ddc.b2bcolab.model.TargetAudienceCategory;
+import ru.ddc.b2bcolab.service.TargetAudienceCategoryService;
 
-@Tag(name = "BrandController", description = "Контроллер сохранения и получения брендов (анкет)")
+@Tag(name = "TargetAudienceCategoryController", description = "Контроллер для работы с категориями целевой аудитории")
 @RestController
-@RequestMapping("/api/brand")
+@RequestMapping("/api/target-audience-categories")
 @RequiredArgsConstructor
 @CrossOrigin(
         origins = {"http://localhost:8080", "http://localhost:3000", "https://w2w-project-site.vercel.app"},
         allowCredentials = "true")
-public class BrandController {
-    private final BrandService brandService;
+public class TargetAudienceCategoryController {
+    private final TargetAudienceCategoryService targetAudienceCategoryService;
 
-    @Operation(summary = "Сохранение бренда")
+    @Operation(summary = "Сохранение категории целевой аудитории")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Бренд успешно сохранен",
-                    content = @Content(schema = @Schema(implementation = Brand.class))),
+                    description = "Категория целевой аудитории успешно сохранена",
+                    content = @Content(schema = @Schema(implementation = TargetAudienceCategory.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<?> createBrand(@Parameter(description = "Бренд") @RequestBody Brand brand) {
-        return ResponseEntity.ok(brandService.save(brand));
+    public ResponseEntity<?> createTargetAudienceCategory(@Parameter(description = "Категория целевой аудитории") @RequestBody TargetAudienceCategory targetAudienceCategory) {
+        return ResponseEntity.ok(targetAudienceCategoryService.save(targetAudienceCategory));
     }
 
-    @Operation(summary = "Получение бренда по его id")
+    @Operation(summary = "Получение всех категорий целевой аудитории")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @Content(schema = @Schema(implementation = Brand.class))),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @Content)
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getBrandById(@PathVariable Long id) {
-        return ResponseEntity.ok(brandService.findById(id));
-    }
-
-    @Operation(summary = "Получение всех брендов")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Успешный запрос",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Brand.class)))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = TargetAudienceCategory.class)))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<?> getAllBrands() {
-        return ResponseEntity.ok(brandService.findAll());
+    public ResponseEntity<?> getAllTargetAudienceCategories() {
+        return ResponseEntity.ok(targetAudienceCategoryService.findAll());
     }
 
-    @Operation(summary = "Обновление бренда")
+    @Operation(summary = "Получение категории целевой аудитории по его id")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успешный запрос",
+                    content = @Content(schema = @Schema(implementation = TargetAudienceCategory.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Доступ к запрошенному ресурсу запрещен",
+                    content = @Content)
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTargetAudienceCategoryById(@PathVariable Long id) {
+        return ResponseEntity.ok(targetAudienceCategoryService.findById(id));
+    }
+
+    @Operation(summary = "Обновление категории целевой аудитории")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Бренд успешно обновлен",
+                    description = "Категория целевой аудитории успешно обновлена",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -86,17 +85,17 @@ public class BrandController {
                     content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateBrand(@PathVariable Long id, @RequestBody Brand updatedBrand) {
-        updatedBrand.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
-        brandService.update(updatedBrand);
+    public ResponseEntity<Void> updateTargetAudienceCategory(@PathVariable Long id, @RequestBody TargetAudienceCategory updatedTargetAudienceCategory) {
+        updatedTargetAudienceCategory.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
+        targetAudienceCategoryService.update(updatedTargetAudienceCategory);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "Удаление бренда")
+    @Operation(summary = "Удаление категории целевой аудитории")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Бренд успешно удален",
+                    description = "Категория целевой аудитории успешно удалена",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -104,8 +103,8 @@ public class BrandController {
                     content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable Long id) {
-        brandService.deleteById(id);
+    public ResponseEntity<Void> deleteTargetAudienceCategory(@PathVariable Long id) {
+        targetAudienceCategoryService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -12,73 +12,72 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.ddc.b2bcolab.controller.payload.CreateBrandRequest;
-import ru.ddc.b2bcolab.model.Brand;
-import ru.ddc.b2bcolab.service.BrandService;
+import ru.ddc.b2bcolab.model.Collaboration;
+import ru.ddc.b2bcolab.service.CollaborationService;
 
-@Tag(name = "BrandController", description = "Контроллер сохранения и получения брендов (анкет)")
+@Tag(name = "CollaborationController", description = "Контроллер для работы с коллаборациями")
 @RestController
-@RequestMapping("/api/brand")
+@RequestMapping("/api/collaborations")
 @RequiredArgsConstructor
 @CrossOrigin(
         origins = {"http://localhost:8080", "http://localhost:3000", "https://w2w-project-site.vercel.app"},
         allowCredentials = "true")
-public class BrandController {
-    private final BrandService brandService;
+public class CollaborationController {
+    private final CollaborationService collaborationService;
 
-    @Operation(summary = "Сохранение бренда")
+    @Operation(summary = "Сохранение коллаборации")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Бренд успешно сохранен",
-                    content = @Content(schema = @Schema(implementation = Brand.class))),
+                    description = "Коллаборация успешно сохранена",
+                    content = @Content(schema = @Schema(implementation = Collaboration.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<?> createBrand(@Parameter(description = "Бренд") @RequestBody Brand brand) {
-        return ResponseEntity.ok(brandService.save(brand));
+    public ResponseEntity<?> createCollaboration(@Parameter(description = "Информация о коллаборации") @RequestBody Collaboration collaboration) {
+        return ResponseEntity.ok(collaborationService.save(collaboration));
     }
 
-    @Operation(summary = "Получение бренда по его id")
+    @Operation(summary = "Получение всех коллабораций")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @Content(schema = @Schema(implementation = Brand.class))),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @Content)
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getBrandById(@PathVariable Long id) {
-        return ResponseEntity.ok(brandService.findById(id));
-    }
-
-    @Operation(summary = "Получение всех брендов")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Успешный запрос",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Brand.class)))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Collaboration.class)))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<?> getAllBrands() {
-        return ResponseEntity.ok(brandService.findAll());
+    public ResponseEntity<?> getAllCollaborations() {
+        return ResponseEntity.ok(collaborationService.findAll());
     }
 
-    @Operation(summary = "Обновление бренда")
+    @Operation(summary = "Получение коллаборации по его id")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успешный запрос",
+                    content = @Content(schema = @Schema(implementation = Collaboration.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Доступ к запрошенному ресурсу запрещен",
+                    content = @Content)
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCollaborationById(@PathVariable Long id) {
+        return ResponseEntity.ok(collaborationService.findById(id));
+    }
+
+    @Operation(summary = "Обновление коллаборации")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Бренд успешно обновлен",
+                    description = "Коллаборация успешно обновлена",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -86,17 +85,17 @@ public class BrandController {
                     content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateBrand(@PathVariable Long id, @RequestBody Brand updatedBrand) {
-        updatedBrand.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
-        brandService.update(updatedBrand);
+    public ResponseEntity<Void> updateCollaboration(@PathVariable Long id, @RequestBody Collaboration updatedCollaboration) {
+        updatedCollaboration.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
+        collaborationService.update(updatedCollaboration);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "Удаление бренда")
+    @Operation(summary = "Удаление коллаборации")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Бренд успешно удален",
+                    description = "Коллаборация успешно удалена",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -104,8 +103,8 @@ public class BrandController {
                     content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable Long id) {
-        brandService.deleteById(id);
+    public ResponseEntity<Void> deleteCollaboration(@PathVariable Long id) {
+        collaborationService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

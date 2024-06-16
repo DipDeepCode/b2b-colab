@@ -12,73 +12,72 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.ddc.b2bcolab.controller.payload.CreateBrandRequest;
-import ru.ddc.b2bcolab.model.Brand;
-import ru.ddc.b2bcolab.service.BrandService;
+import ru.ddc.b2bcolab.model.InteractionFormat;
+import ru.ddc.b2bcolab.service.InteractionFormatService;
 
-@Tag(name = "BrandController", description = "Контроллер сохранения и получения брендов (анкет)")
+@Tag(name = "InteractionFormatController", description = "Контроллер для работы с форматами взаимодействия")
 @RestController
-@RequestMapping("/api/brand")
+@RequestMapping("/api/interaction-formats")
 @RequiredArgsConstructor
 @CrossOrigin(
         origins = {"http://localhost:8080", "http://localhost:3000", "https://w2w-project-site.vercel.app"},
         allowCredentials = "true")
-public class BrandController {
-    private final BrandService brandService;
+public class InteractionFormatController {
+    private final InteractionFormatService interactionFormatService;
 
-    @Operation(summary = "Сохранение бренда")
+    @Operation(summary = "Сохранение формата взаимодействия")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Бренд успешно сохранен",
-                    content = @Content(schema = @Schema(implementation = Brand.class))),
+                    description = "Формат взаимодействия успешно сохранен",
+                    content = @Content(schema = @Schema(implementation = InteractionFormat.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<?> createBrand(@Parameter(description = "Бренд") @RequestBody Brand brand) {
-        return ResponseEntity.ok(brandService.save(brand));
+    public ResponseEntity<?> createInteractionFormat(@Parameter(description = "Формат взаимодействия") @RequestBody InteractionFormat interactionFormat) {
+        return ResponseEntity.ok(interactionFormatService.save(interactionFormat));
     }
 
-    @Operation(summary = "Получение бренда по его id")
+    @Operation(summary = "Получение всех форматов взаимодействия")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @Content(schema = @Schema(implementation = Brand.class))),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @Content)
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getBrandById(@PathVariable Long id) {
-        return ResponseEntity.ok(brandService.findById(id));
-    }
-
-    @Operation(summary = "Получение всех брендов")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Успешный запрос",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Brand.class)))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = InteractionFormat.class)))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<?> getAllBrands() {
-        return ResponseEntity.ok(brandService.findAll());
+    public ResponseEntity<?> getAllInteractionFormats() {
+        return ResponseEntity.ok(interactionFormatService.findAll());
     }
 
-    @Operation(summary = "Обновление бренда")
+    @Operation(summary = "Получение формата взаимодействия по его id")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успешный запрос",
+                    content = @Content(schema = @Schema(implementation = InteractionFormat.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Доступ к запрошенному ресурсу запрещен",
+                    content = @Content)
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getInteractionFormatById(@PathVariable Long id) {
+        return ResponseEntity.ok(interactionFormatService.findById(id));
+    }
+
+    @Operation(summary = "Обновление формата взаимодействия")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Бренд успешно обновлен",
+                    description = "Формат взаимодействия успешно обновлен",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -86,17 +85,17 @@ public class BrandController {
                     content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateBrand(@PathVariable Long id, @RequestBody Brand updatedBrand) {
-        updatedBrand.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
-        brandService.update(updatedBrand);
+    public ResponseEntity<Void> updateInteractionFormat(@PathVariable Long id, @RequestBody InteractionFormat updatedInteractionFormat) {
+        updatedInteractionFormat.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
+        interactionFormatService.update(updatedInteractionFormat);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "Удаление бренда")
+    @Operation(summary = "Удаление формата взаимодействия")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Бренд успешно удален",
+                    description = "Формат взаимодействия успешно удален",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -104,8 +103,8 @@ public class BrandController {
                     content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable Long id) {
-        brandService.deleteById(id);
+    public ResponseEntity<Void> deleteInteractionFormat(@PathVariable Long id) {
+        interactionFormatService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
