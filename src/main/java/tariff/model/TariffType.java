@@ -1,6 +1,6 @@
-package model;
+package tariff.model;
 
-public enum ListTariff {
+public enum TariffType {
     LITE_MATCH,
     COMFORT_MATCH,
     BUSINESS_MATCH

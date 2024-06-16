@@ -2,6 +2,7 @@ package ru.ddc.b2bcolab.configuration;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,9 +35,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/create", "/api/auth/login").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/api/auth/register", "/api/auth/changePass").not().anonymous()
+                        .requestMatchers("/api/auth/changePass", "/api/auth/register").not().anonymous()
                         .requestMatchers("/api/test/permitAll").permitAll()
                         .requestMatchers("/api/test/roleUserOnly").hasRole("USER")
+                        .requestMatchers("/api/files/**").hasAnyRole("USER", "MODERATOR")
+                        .requestMatchers("/api/image/**", "/api/brand/**").authenticated()
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))
@@ -70,5 +73,10 @@ public class SecurityConfiguration {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public TomcatContextCustomizer tomcatContextCustomizer() {
+        return context -> context.setUsePartitioned(true);
     }
 }

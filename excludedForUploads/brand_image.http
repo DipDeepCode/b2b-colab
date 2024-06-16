@@ -1,0 +1,33 @@
+###
+# @name create brand
+# @no-log
+POST http://localhost:8080/api/brand
+Content-Type: application/json
+
+{
+  "customerPhoneNumber": "+71231231213",
+  "name": "test brand name"
+}
+
+###
+# @name get brand by id
+# @no-log
+GET http://localhost:8080/api/brand/3
+
+
+###
+# @name upload image
+# @no-log
+POST http://localhost:8080/api/image?brandId=4&imageType=LOGO
+Content-Type: multipart/form-data; boundary=WebBoundary
+
+--WebBoundary
+Content-Disposition: form-data; name="file"; filename="image.png"
+Content-Type: image/png
+
+< D:\files\image.png
+
+###
+# @name get image by id
+# @no-log
+GET http://localhost:8080/api/image/10

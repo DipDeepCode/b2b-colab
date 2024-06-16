@@ -2,9 +2,8 @@ package model;
 
 import lombok.*;
 
-@Description("Класс Collaba представляет собой модель данных для коллаборации между брендами. " +
-        "Он содержит информацию о коллаборации, включая идентификатор коллаборации, " +
-        "с кем происходит коллаборация, идентификатор и ссылку на бренд, участвующий в коллаборации.")
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -12,7 +11,8 @@ import lombok.*;
 @ToString
 public class Collaba {
     private long id; // Уникальный идентификатор коллаборации
-    private String withWhom; // Информация о том, с кем происходит коллаборация
-    private long brandId; // Идентификатор бренда, участвующего в коллаборации
-    private Brand brand; // Связь с классом Brand, представляющим бренд, участвующий в коллаборации
+    private String with_whom; // С кем проводится коллаборация
+    private Brand brand; // Ссылка на объект Brand, с которым связана коллаборация
+    private LocalDateTime created_at; // Дата и время создания коллаборации
+    private LocalDateTime updated_at; // Последнее обновление коллаборации
 }
