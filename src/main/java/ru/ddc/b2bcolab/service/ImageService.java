@@ -45,8 +45,6 @@ public class ImageService {
                     .filename(filename)
                     .build();
 
-            System.out.println(image);
-
             return imageRepository.save(image);
 
         } catch (IOException e) {
@@ -58,7 +56,8 @@ public class ImageService {
     public Resource getImageById(Long id) {
         Image image = imageRepository.findById(id).orElseThrow();
         try {
-            return new UrlResource(root.resolve(FileUtils.decodeBase64ToPath(image.getFilename())).toUri());
+            Path path = FileUtils.decodeBase64ToPath(image.getFilename());
+            return new UrlResource(root.resolve(path).toUri());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
