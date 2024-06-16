@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,7 +52,7 @@ public class ImageController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)),
+                    content = @Content(mediaType = MediaType.IMAGE_PNG_VALUE)),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
@@ -59,6 +61,8 @@ public class ImageController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<?> getImage(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(imageService.getImageById(id));
+        Resource resource = imageService.getImageById(id);
+        MediaType mimeType = MediaTypeFactory.getMediaType(resource.getFilename()).orElse(MediaType.IMAGE_PNG);
+        return ResponseEntity.ok().contentType(mimeType).body(resource);
     }
 }
