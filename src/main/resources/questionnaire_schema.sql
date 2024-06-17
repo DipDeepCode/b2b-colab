@@ -13,7 +13,7 @@ CREATE TABLE questionnaire
    brand_name TEXT,
    business_category TEXT,
    brand_type TEXT,
-   banned_social_link TEXT,
+   branded_social_link TEXT,
    brand_website_link TEXT,
    followers_count INTEGER,
    average_check INTEGER,
@@ -44,9 +44,9 @@ COMMENT ON COLUMN questionnaire.product_illustration IS 'Фотография п
 COMMENT ON COLUMN questionnaire.brand_name IS 'Название бренда участника';
 COMMENT ON COLUMN questionnaire.business_category IS 'Категория бизнеса участника';
 COMMENT ON COLUMN questionnaire.brand_type IS 'Тип бренда участника (онлайн/оффлайн)';
-COMMENT ON COLUMN questionnaire.banned_social_link IS 'Ссылка на страницу бренда в запрещенной соц. сети';
+COMMENT ON COLUMN questionnaire.branded_social_link IS 'Ссылка на соц. сети';
 COMMENT ON COLUMN questionnaire.brand_website_link IS 'Ссылка на сайт бренда или маркетплейс участника';
-COMMENT ON COLUMN questionnaire.followers_count IS 'Количество подписчиков в запрещенной сети';
+COMMENT ON COLUMN questionnaire.followers_count IS 'Количество подписчиков';
 COMMENT ON COLUMN questionnaire.average_check IS 'Средний чек покупок в бизнесе участника';
 COMMENT ON COLUMN questionnaire.product_uniqueness IS 'Уникальность продукта, предлагаемого участником';
 COMMENT ON COLUMN questionnaire.customer_problem_solved IS 'Проблема, решаемая продуктом для клиента';

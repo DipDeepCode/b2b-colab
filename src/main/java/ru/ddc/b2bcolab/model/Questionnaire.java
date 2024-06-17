@@ -23,7 +23,7 @@ public class Questionnaire {
     private String brandName; // Название бренда
     private String businessCategory; // Категория бизнеса
     private String brandType; // Тип бренда (онлайн/оффлайн)
-    private String bannedSocialLink; // Ссылка на страницу бренда в запрещенной соц. сети
+    private String brandedSocialLink; // Ссылка на страницу бренда соц. сети
     private String brandWebsiteLink; // Ссылка на сайт бренда или маркетплейс
     private int followersCount; // Количество подписчиков в запрещенной сети
     private int averageCheck; // Средний чек
