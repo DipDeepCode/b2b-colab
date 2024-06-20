@@ -52,7 +52,7 @@ public class CustomerService {
         Customer customer = Customer.builder()
                 .phoneNumber(request.getPhoneNumber())
                 .email(request.getEmail())
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .roles(Role.ROLE_USER)
                 .build();
         customerRepository.save(customer);

@@ -35,7 +35,7 @@ public class TestPasscodeValidator implements PasscodeValidator {
 
     private String generatePasscode() {
         Random random = new Random();
-        int passcode = 100000 + random.nextInt(900000);
+        int passcode = 1000 + random.nextInt(9000);
         return String.valueOf(passcode);
     }
 
