@@ -54,15 +54,18 @@ public class CustomerService {
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .roles(Role.ROLE_USER)
-                .passwordEncoder(passwordEncoder::encode)
                 .build();
+        customerRepository.save(customer);
+
         UsernamePasswordAuthenticationToken token =
                 UsernamePasswordAuthenticationToken.unauthenticated(customer, null);
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(token);
         SecurityContextHolder.setContext(context);
         contextRepository.saveContext(context, httpServletRequest, httpServletResponse);
-        // TODO отправить сообщение с проверочным кодом
+
+        passcodeValidator.sendPasscode(request.getEmail());
+
     }
 
     public void registerCustomer(String passcode,
