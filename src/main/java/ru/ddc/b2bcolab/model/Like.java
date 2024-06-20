@@ -12,7 +12,7 @@ public class Like {
 
     private long id; // Уникальный идентификатор лайка
     private LocalDateTime timestamp; // Время, когда был поставлен лайк
-    private Brand fromBrand; // Бренд, который поставил лайк
-    private Brand toBrand; // Бренд, которому был поставлен лайк
+    private Long fromBrandId; // От кого лайк
+    private Long toBrandId; // Кому лайк
 
 }

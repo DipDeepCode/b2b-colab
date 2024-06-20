@@ -1,18 +1,17 @@
 package ru.ddc.b2bcolab.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.ddc.b2bcolab.repository.TariffFeatures;
 import ru.ddc.b2bcolab.repository.TariffType;
 import java.time.LocalDate;
 
-@Description("Класс, представляющий тариф с указанием его типа, дат начала и окончания, а также набора функциональных возможностей.")
+@Description("Класс, представляющий тариф с указанием его типа, дат начала и окончания, " +
+        "а также набора функциональных возможностей.")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class Tariff {
     private Long id;
     private TariffType type;
@@ -20,11 +19,30 @@ public class Tariff {
     private LocalDate endDate;
     private TariffFeatures features;
 
+    public Tariff(TariffType type, LocalDate startDate) {
+        this.type = type;
+        this.startDate = startDate;
+        this.endDate = startDate.plusYears(1); // Пример: тариф на 1 год
+        this.features = createFeatures(type);
+    }
+
+    public TariffFeatures createFeatures(TariffType type) {
+        // Создание функций на основе типа тарифа
+        switch (type) {
+            case LITE_MATCH:
+                return new LiteMatchFeatures();
+            case COMFORT_MATCH:
+                return new ComfortMatchFeatures();
+            case BUSINESS_MATCH:
+                return new BusinessMatchFeatures();
+            default:
+                return null;
+        }
+    }
 
     public static class LiteMatchFeatures implements TariffFeatures {
         @Override
         public void applyFeatures() {
-            // Реализация возможностей для LITE_MATCH
             System.out.println("Applying Lite Match features");
         }
     }
@@ -32,7 +50,6 @@ public class Tariff {
     public static class ComfortMatchFeatures implements TariffFeatures {
         @Override
         public void applyFeatures() {
-            // Реализация возможностей для COMFORT_MATCH
             System.out.println("Applying Comfort Match features");
         }
     }
@@ -40,7 +57,6 @@ public class Tariff {
     public static class BusinessMatchFeatures implements TariffFeatures {
         @Override
         public void applyFeatures() {
-            // Реализация возможностей для BUSINESS_MATCH
             System.out.println("Applying Business Match features");
         }
     }

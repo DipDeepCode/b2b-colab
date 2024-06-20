@@ -1,46 +1,61 @@
 package ru.ddc.b2bcolab.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.ddc.b2bcolab.model.Tariff;
-import ru.ddc.b2bcolab.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
+
 @Repository
 @RequiredArgsConstructor
-public class TariffRepository implements CrudRepository<Tariff, Long> {
-
+public class TariffRepository {
     private final JdbcClient jdbcClient;
 
-    @Override
-    public Tariff save(Tariff model) {
-        return null;
+    public Tariff save(Tariff tariff) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcClient.sql("""
+                insert into tariffs (type, startDate, endDate, features)
+                values (:type, :startDate, :endDate, :features)
+                returning id
+                """)
+                .paramSource(tariff)
+                .update(keyHolder);
+        tariff.setId(keyHolder.getKeyAs(Long.class));
+        return tariff;
     }
 
-    @Override
     public List<Tariff> findAll() {
-        return List.of();
+        return jdbcClient.sql("select * from tariffs")
+                .query(new BeanPropertyRowMapper<>(Tariff.class))
+                .list();
     }
 
-    @Override
-    public Optional<Tariff> findById(Long aLong) {
-        return Optional.empty();
+    public Optional<Tariff> findById(Long id) {
+        return jdbcClient.sql("select * from tariffs where id = :id")
+                .param("id", id)
+                .query(new BeanPropertyRowMapper<>(Tariff.class))
+                .optional();
     }
 
-    @Override
     public int update(Tariff tariff) {
-        return 0;
+        return jdbcClient.sql("""
+                update tariffs
+                set type = :type, startDate = :startDate, endDate = :endDate, features = :features
+                where id = :id
+                """)
+                .paramSource(tariff)
+                .update();
     }
 
-    @Override
-    public int deleteById(Long aLong) {
-        return 0;
-    }
-
-    @Override
-    public boolean exists(Long aLong) {
-        return false;
+    public boolean exists(Long id) {
+        return jdbcClient.sql("select exists(select 1 from tariffs where id = :id)")
+                .param("id", id)
+                .query(Boolean.class)
+                .single();
     }
 }

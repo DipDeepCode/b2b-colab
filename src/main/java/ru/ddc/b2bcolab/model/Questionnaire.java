@@ -3,14 +3,16 @@ package ru.ddc.b2bcolab.model;
 import lombok.*;
 import java.util.Date;
 
-@Description("Анкета, содержащая информацию о бренде, его предпочтениях, а также данные о целевой аудитории и предпочтительных категориях для коллаборации.")
+@Description("Анкета, содержащая информацию о бренде, его предпочтениях, а также данные о целевой аудитории и " +
+        "предпочтительных категориях для коллаборации.")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
 @ToString
 public class Questionnaire {
-    private int id; // Уникальный идентификатор записи
+
+    private long id; // Уникальный идентификатор записи
     private String favoritePhoto; // Ссылка на любимое фото
     private String telegramNick; // Никнейм в Telegram
     private Date birthDate; // Дата рождения
@@ -25,7 +27,7 @@ public class Questionnaire {
     private String brandType; // Тип бренда (онлайн/оффлайн)
     private String brandedSocialLink; // Ссылка на страницу бренда соц. сети
     private String brandWebsiteLink; // Ссылка на сайт бренда или маркетплейс
-    private int followersCount; // Количество подписчиков в запрещенной сети
+    private int followersCount; // Количество подписчиков
     private int averageCheck; // Средний чек
     private String productUniqueness; // Уникальность продукта
     private String customerProblemSolved; // Проблема, решаемая для клиента
@@ -39,5 +41,6 @@ public class Questionnaire {
     private String targetAudienceCategories; // Категории целевой аудитории
     private Customer customer; // Ссылка на Customer
     private Brand brand; // Ссылка на Brand
+
 }
 
