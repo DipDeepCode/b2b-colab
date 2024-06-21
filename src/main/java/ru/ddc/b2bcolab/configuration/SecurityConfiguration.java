@@ -39,7 +39,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/test/permitAll").permitAll()
                         .requestMatchers("/api/test/roleUserOnly").hasRole("USER")
                         .requestMatchers("/api/files/**").hasAnyRole("USER", "MODERATOR")
-                        .requestMatchers("/api/image/**", "/api/brand/**").authenticated()
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/api/auth/logout"))

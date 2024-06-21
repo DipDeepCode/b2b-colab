@@ -20,7 +20,6 @@ create table chat_message
     chat_room_id bigint,
     sender_phone_number varchar(50) not null,
     content varchar(1000) not null,
-    status varchar(20) not null,
     created_at timestamp not null,
     foreign key (chat_room_id) references chat_rooms (id),
     foreign key (sender_phone_number) references customers (phone_number)
@@ -31,6 +30,5 @@ comment on column chat_message.id is 'Первичный ключ таблицы
 comment on column chat_message.chat_room_id is 'Внешний ключ на chat_rooms';
 comment on column chat_message.sender_phone_number is 'Внешний ключ на customers - отправитель сообщения';
 comment on column chat_message.content is 'Содержимое сообщения';
-comment on column chat_message.status is 'Статус сообщения: SENT, DELIVERED, READ';
 comment on column chat_message.created_at is 'timestamp отправки сообщения';
 

@@ -42,6 +42,17 @@ public class ImageRepository implements CrudRepository<Image, Long> {
                 .optional();
     }
 
+    public Image findLogoImageByBrandId(Long brandId) {
+        return jdbcClient.sql(
+                "select * from " +
+                        "(select i.*, row_number() over (order by i.id) rn " +
+                        "from images i where i.brand_id = :brandId and i.image_type = 'LOGO') t " +
+                        "where t.rn = 1")
+                .param("brandId", brandId)
+                .query(new BeanPropertyRowMapper<>(Image.class))
+                .single();
+    }
+
     @Override
     public int update(Image image) {
         return 0;
