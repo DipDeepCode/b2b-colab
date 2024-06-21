@@ -1,0 +1,29 @@
+###
+# @name login
+# @no-log
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "phoneNumberOrEmail": "+71231231213",
+  "password": "pass"
+}
+
+
+###
+# @name get chat entries
+# @no-log
+GET http://localhost:8080/api/chatRoom/summary
+
+
+###
+# @name asdf
+# @no-log
+GET http://localhost:8080/webchat.html
+
+
+###
+# @name get last chat messages
+# @no-log
+GET http://localhost:8080/api/chatMessage?chatRoomId=1
+

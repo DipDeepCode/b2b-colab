@@ -42,6 +42,13 @@ public class BrandRepository implements CrudRepository<Brand, Long> {
                 .optional();
     }
 
+    public Optional<Brand> findByPhoneNumber(String phoneNumber) {
+        return jdbcClient.sql("select * from brands where customer_phone_number = :phoneNumber")
+                .param("phoneNumber", phoneNumber)
+                .query(new BeanPropertyRowMapper<>(Brand.class))
+                .optional();
+    }
+
     @Override
     public int update(Brand brand) {
         return 0;
