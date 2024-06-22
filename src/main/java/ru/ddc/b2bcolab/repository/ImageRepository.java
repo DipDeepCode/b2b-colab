@@ -7,7 +7,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.ddc.b2bcolab.model.Image;
-
 import java.util.List;
 import java.util.Optional;
 
