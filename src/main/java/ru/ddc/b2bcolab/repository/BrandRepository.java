@@ -20,7 +20,7 @@ public class BrandRepository implements CrudRepository<Brand, Long> {
     @Override
     public Brand save(Brand brand) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcClient.sql("insert into brands (customer_phone_number, name) values (:customerPhoneNumber, :name) returning id")
+        jdbcClient.sql("insert into brands (customer_phone_number, name, tariff_plan_id) values (:customerPhoneNumber, :name, :tarifPlanId) returning id")
                 .paramSource(brand)
                 .update(keyHolder);
         brand.setId(keyHolder.getKeyAs(Long.class));
@@ -51,16 +51,23 @@ public class BrandRepository implements CrudRepository<Brand, Long> {
 
     @Override
     public int update(Brand brand) {
-        return 0;
+        return jdbcClient.sql("update brands set name = :name, tariff_plan_id = :tariffPlanId where id = :id")
+                .paramSource(brand)
+                .update();
     }
 
     @Override
-    public int deleteById(Long aLong) {
-        return 0;
+    public int deleteById(Long id) {
+        return jdbcClient.sql("delete from brands where id = :id")
+                .param("id", id)
+                .update();
     }
 
     @Override
-    public boolean exists(Long aLong) {
-        return false;
+    public boolean exists(Long id) {
+        return jdbcClient.sql("select exists(select 'x' from brands where id = :id)")
+                .param("id", id)
+                .query(new BeanPropertyRowMapper<>(Boolean.class))
+                .single();
     }
 }
