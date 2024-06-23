@@ -25,7 +25,6 @@ import ru.ddc.b2bcolab.model.Role;
 import ru.ddc.b2bcolab.repository.AuthorityRepository;
 import ru.ddc.b2bcolab.repository.CustomerRepository;
 import ru.ddc.b2bcolab.utils.RegisterCustomerRequestValidator;
-import ru.ddc.b2bcolab.utils.TestPasscodeValidator;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +38,7 @@ public class CustomerService {
     private final RegisterCustomerRequestValidator registerCustomerRequestValidator;
     private final AuthenticationManager authenticationManager;
     private final HttpSessionSecurityContextRepository contextRepository = new HttpSessionSecurityContextRepository();
-    private final TestPasscodeValidator passcodeValidator;
+    private final PasscodeManager passcodeManager;
 
     public void createCustomer(RegisterCustomerRequest request,
                                BindingResult bindingResult,
@@ -62,14 +61,15 @@ public class CustomerService {
         context.setAuthentication(token);
         SecurityContextHolder.setContext(context);
         contextRepository.saveContext(context, httpServletRequest, httpServletResponse);
-        // TODO отправить сообщение с проверочным кодом
+
+        passcodeManager.sendPasscode(customer);
     }
 
     public void registerCustomer(String passcode,
                                  HttpServletRequest httpServletRequest,
                                  HttpServletResponse httpServletResponse) {
         SecurityContext context = SecurityContextHolder.getContext();
-        if (passcodeValidator.validate(passcode)) {
+        if (passcodeManager.verifyPasscode(passcode)) {
             Authentication authentication = context.getAuthentication();
             Customer customer = (Customer) authentication.getPrincipal();
             customerRepository.save(customer);
