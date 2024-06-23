@@ -2,6 +2,9 @@ package ru.ddc.b2bcolab.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,33 +14,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ddc.b2bcolab.model.BrandValue;
 import ru.ddc.b2bcolab.service.BrandValueService;
-import java.util.List;
 
+@Tag(name = "BrandValueController", description = "Контроллер для работы с ключевыми ценностями бренда")
 @RestController
 @RequestMapping("/api/brand-values")
 @RequiredArgsConstructor
 @CrossOrigin(
         origins = {"http://localhost:8080", "http://localhost:3000", "https://w2w-project-site.vercel.app"},
         allowCredentials = "true")
-@Tag(name = "BrandValueController", description = "Контроллер сохранения и получения ключевых ценностей бренда")
 public class BrandValueController {
     private final BrandValueService brandValueService;
 
     @Operation(summary = "Сохранение ключевой ценности бренда")
     @ApiResponses({
             @ApiResponse(
-                    responseCode = "201",
+                    responseCode = "200",
                     description = "Ключевая ценность бренда успешно сохранена",
-                    content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = BrandValue.class))),
+                    content = @Content(schema = @Schema(implementation = BrandValue.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @io.swagger.v3.oas.annotations.media.Content)
+                    content = @Content)
     })
     @PostMapping
-    public ResponseEntity<BrandValue> createBrandValue(@Parameter(description = "Ключевая ценность бренда") @RequestBody BrandValue brandValue) {
-        BrandValue createdBrandValue = brandValueService.save(brandValue);
-        return new ResponseEntity<>(createdBrandValue, HttpStatus.CREATED);
+    public ResponseEntity<?> createBrandValue(@Parameter(description = "Ключевая ценность бренда") @RequestBody BrandValue brandValue) {
+        return ResponseEntity.ok(brandValueService.save(brandValue));
     }
 
     @Operation(summary = "Получение всех ключевых ценностей бренда")
@@ -45,16 +46,15 @@ public class BrandValueController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = BrandValue.class))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = BrandValue.class)))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @io.swagger.v3.oas.annotations.media.Content)
+                    content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<BrandValue>> getAllBrandValues() {
-        List<BrandValue> brandValues = brandValueService.findAll();
-        return new ResponseEntity<>(brandValues, HttpStatus.OK);
+    public ResponseEntity<?> getAllBrandValues() {
+        return ResponseEntity.ok(brandValueService.findAll());
     }
 
     @Operation(summary = "Получение ключевой ценности бренда по его id")
@@ -62,28 +62,45 @@ public class BrandValueController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = BrandValue.class))),
+                    content = @Content(schema = @Schema(implementation = BrandValue.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @io.swagger.v3.oas.annotations.media.Content)
+                    content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<BrandValue> getBrandValueById(@PathVariable Long id) {
-        BrandValue brandValue = brandValueService.findById(id);
-        return new ResponseEntity<>(brandValue, HttpStatus.OK);
+    public ResponseEntity<?> getBrandValueById(@PathVariable Long id) {
+        return ResponseEntity.ok(brandValueService.findById(id));
     }
 
-    @Operation(summary = "Удаление ключевой ценности бренда по его id")
+    @Operation(summary = "Обновление ключевой ценности бренда")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Ключевая ценность бренда успешно обновлена",
+                    content = @Content),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Доступ к запрошенному ресурсу запрещен",
+                    content = @Content)
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateBrandValue(@PathVariable Long id, @RequestBody BrandValue updatedBrandValue) {
+        updatedBrandValue.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
+        brandValueService.update(updatedBrandValue);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "Удаление ключевой ценности бренда")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
                     description = "Ключевая ценность бренда успешно удалена",
-                    content = @io.swagger.v3.oas.annotations.media.Content),
+                    content = @Content),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @io.swagger.v3.oas.annotations.media.Content)
+                    content = @Content)
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBrandValue(@PathVariable Long id) {

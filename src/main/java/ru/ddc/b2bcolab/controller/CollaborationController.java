@@ -12,72 +12,72 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.ddc.b2bcolab.model.TargetAudienceCategory;
-import ru.ddc.b2bcolab.service.TargetAudienceCategoryService;
+import ru.ddc.b2bcolab.model.Collaboration;
+import ru.ddc.b2bcolab.service.CollaborationService;
 
-@Tag(name = "TargetAudienceCategoryController", description = "Контроллер для работы с категориями целевой аудитории")
+@Tag(name = "CollaborationController", description = "Контроллер для работы с коллаборациями")
 @RestController
-@RequestMapping("/api/target-audience-categories")
+@RequestMapping("/api/collaborations")
 @RequiredArgsConstructor
 @CrossOrigin(
         origins = {"http://localhost:8080", "http://localhost:3000", "https://w2w-project-site.vercel.app"},
         allowCredentials = "true")
-public class TargetAudienceCategoryController {
-    private final TargetAudienceCategoryService targetAudienceCategoryService;
+public class CollaborationController {
+    private final CollaborationService collaborationService;
 
-    @Operation(summary = "Сохранение категории целевой аудитории")
+    @Operation(summary = "Сохранение коллаборации")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Категория целевой аудитории успешно сохранена",
-                    content = @Content(schema = @Schema(implementation = TargetAudienceCategory.class))),
+                    description = "Коллаборация успешно сохранена",
+                    content = @Content(schema = @Schema(implementation = Collaboration.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<?> createTargetAudienceCategory(@Parameter(description = "Категория целевой аудитории") @RequestBody TargetAudienceCategory targetAudienceCategory) {
-        return ResponseEntity.ok(targetAudienceCategoryService.save(targetAudienceCategory));
+    public ResponseEntity<?> createCollaboration(@Parameter(description = "Информация о коллаборации") @RequestBody Collaboration collaboration) {
+        return ResponseEntity.ok(collaborationService.save(collaboration));
     }
 
-    @Operation(summary = "Получение всех категорий целевой аудитории")
+    @Operation(summary = "Получение всех коллабораций")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = TargetAudienceCategory.class)))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Collaboration.class)))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<?> getAllTargetAudienceCategories() {
-        return ResponseEntity.ok(targetAudienceCategoryService.findAll());
+    public ResponseEntity<?> getAllCollaborations() {
+        return ResponseEntity.ok(collaborationService.findAll());
     }
 
-    @Operation(summary = "Получение категории целевой аудитории по его id")
+    @Operation(summary = "Получение коллаборации по его id")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @Content(schema = @Schema(implementation = TargetAudienceCategory.class))),
+                    content = @Content(schema = @Schema(implementation = Collaboration.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTargetAudienceCategoryById(@PathVariable Long id) {
-        return ResponseEntity.ok(targetAudienceCategoryService.findById(id));
+    public ResponseEntity<?> getCollaborationById(@PathVariable Long id) {
+        return ResponseEntity.ok(collaborationService.findById(id));
     }
 
-    @Operation(summary = "Обновление категории целевой аудитории")
+    @Operation(summary = "Обновление коллаборации")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Категория целевой аудитории успешно обновлена",
+                    description = "Коллаборация успешно обновлена",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -85,17 +85,17 @@ public class TargetAudienceCategoryController {
                     content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateTargetAudienceCategory(@PathVariable Long id, @RequestBody TargetAudienceCategory updatedTargetAudienceCategory) {
-        updatedTargetAudienceCategory.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
-        targetAudienceCategoryService.update(updatedTargetAudienceCategory);
+    public ResponseEntity<Void> updateCollaboration(@PathVariable Long id, @RequestBody Collaboration updatedCollaboration) {
+        updatedCollaboration.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
+        collaborationService.update(updatedCollaboration);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "Удаление категории целевой аудитории")
+    @Operation(summary = "Удаление коллаборации")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Категория целевой аудитории успешно удалена",
+                    description = "Коллаборация успешно удалена",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -103,8 +103,8 @@ public class TargetAudienceCategoryController {
                     content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTargetAudienceCategory(@PathVariable Long id) {
-        targetAudienceCategoryService.deleteById(id);
+    public ResponseEntity<Void> deleteCollaboration(@PathVariable Long id) {
+        collaborationService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

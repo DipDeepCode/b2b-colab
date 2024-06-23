@@ -2,6 +2,9 @@ package ru.ddc.b2bcolab.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -12,33 +15,30 @@ import org.springframework.web.bind.annotation.*;
 import ru.ddc.b2bcolab.model.InteractionFormat;
 import ru.ddc.b2bcolab.service.InteractionFormatService;
 
-import java.util.List;
-
+@Tag(name = "InteractionFormatController", description = "Контроллер для работы с форматами взаимодействия")
 @RestController
 @RequestMapping("/api/interaction-formats")
 @RequiredArgsConstructor
 @CrossOrigin(
         origins = {"http://localhost:8080", "http://localhost:3000", "https://w2w-project-site.vercel.app"},
         allowCredentials = "true")
-@Tag(name = "InteractionFormatController", description = "Контроллер сохранения и получения форматов взаимодействия")
 public class InteractionFormatController {
     private final InteractionFormatService interactionFormatService;
 
     @Operation(summary = "Сохранение формата взаимодействия")
     @ApiResponses({
             @ApiResponse(
-                    responseCode = "201",
+                    responseCode = "200",
                     description = "Формат взаимодействия успешно сохранен",
-                    content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = InteractionFormat.class))),
+                    content = @Content(schema = @Schema(implementation = InteractionFormat.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @io.swagger.v3.oas.annotations.media.Content)
+                    content = @Content)
     })
     @PostMapping
-    public ResponseEntity<InteractionFormat> createInteractionFormat(@Parameter(description = "Формат взаимодействия") @RequestBody InteractionFormat interactionFormat) {
-        InteractionFormat createdInteractionFormat = interactionFormatService.save(interactionFormat);
-        return new ResponseEntity<>(createdInteractionFormat, HttpStatus.CREATED);
+    public ResponseEntity<?> createInteractionFormat(@Parameter(description = "Формат взаимодействия") @RequestBody InteractionFormat interactionFormat) {
+        return ResponseEntity.ok(interactionFormatService.save(interactionFormat));
     }
 
     @Operation(summary = "Получение всех форматов взаимодействия")
@@ -46,16 +46,15 @@ public class InteractionFormatController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = InteractionFormat.class))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = InteractionFormat.class)))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @io.swagger.v3.oas.annotations.media.Content)
+                    content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<InteractionFormat>> getAllInteractionFormats() {
-        List<InteractionFormat> interactionFormats = interactionFormatService.findAll();
-        return new ResponseEntity<>(interactionFormats, HttpStatus.OK);
+    public ResponseEntity<?> getAllInteractionFormats() {
+        return ResponseEntity.ok(interactionFormatService.findAll());
     }
 
     @Operation(summary = "Получение формата взаимодействия по его id")
@@ -63,28 +62,45 @@ public class InteractionFormatController {
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @io.swagger.v3.oas.annotations.media.Content(schema = @io.swagger.v3.oas.annotations.media.Schema(implementation = InteractionFormat.class))),
+                    content = @Content(schema = @Schema(implementation = InteractionFormat.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @io.swagger.v3.oas.annotations.media.Content)
+                    content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<InteractionFormat> getInteractionFormatById(@PathVariable Long id) {
-        InteractionFormat interactionFormat = interactionFormatService.findById(id);
-        return new ResponseEntity<>(interactionFormat, HttpStatus.OK);
+    public ResponseEntity<?> getInteractionFormatById(@PathVariable Long id) {
+        return ResponseEntity.ok(interactionFormatService.findById(id));
     }
 
-    @Operation(summary = "Удаление формата взаимодействия по его id")
+    @Operation(summary = "Обновление формата взаимодействия")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Формат взаимодействия успешно обновлен",
+                    content = @Content),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Доступ к запрошенному ресурсу запрещен",
+                    content = @Content)
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateInteractionFormat(@PathVariable Long id, @RequestBody InteractionFormat updatedInteractionFormat) {
+        updatedInteractionFormat.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
+        interactionFormatService.update(updatedInteractionFormat);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "Удаление формата взаимодействия")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
                     description = "Формат взаимодействия успешно удален",
-                    content = @io.swagger.v3.oas.annotations.media.Content),
+                    content = @Content),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @io.swagger.v3.oas.annotations.media.Content)
+                    content = @Content)
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInteractionFormat(@PathVariable Long id) {
