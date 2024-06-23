@@ -13,4 +13,5 @@ public class Brand {
     private Long id;
     private String customerPhoneNumber;
     private String name;
+    private Long tariffId;
 }
