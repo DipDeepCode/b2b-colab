@@ -1,24 +1,24 @@
-CREATE TABLE tariff_plan
+create table tariff_plan
 (
-    id              BIGSERIAL PRIMARY KEY,
-    name            VARCHAR(255)   NOT NULL,
-    description     TEXT,
-    price_per_month DECIMAL(10, 2) NOT NULL,
-    start_date      TIMESTAMP,
-    end_date        TIMESTAMP,
-    created_at      TIMESTAMP,
-    updated_at      TIMESTAMP
+    id              bigserial primary key,
+    name            varchar(255)   not null,
+    description     text,
+    price_per_month decimal(10, 2) not null,
+    start_date      timestamp,
+    end_date        timestamp,
+    created_at      timestamp,
+    updated_at      timestamp
 );
 
-COMMENT ON TABLE tariff_plan IS 'Таблица хранения информации о тарифах';
-COMMENT ON COLUMN tariff_plan.id IS 'Первичный ключ';
-COMMENT ON COLUMN tariff_plan.name IS 'Название тарифа';
-COMMENT ON COLUMN tariff_plan.description IS 'Описание тарифа';
-COMMENT ON COLUMN tariff_plan.price_per_month IS 'Стоимость тарифа рублей в месяц';
-COMMENT ON COLUMN tariff_plan.start_date IS 'Дата начала действия тарифа';
-COMMENT ON COLUMN tariff_plan.end_date IS 'Дата окончания действия тарифа';
-COMMENT ON COLUMN tariff_plan.created_at IS 'Дата и время создания записи о тарифе';
-COMMENT ON COLUMN tariff_plan.updated_at IS 'Дата и время последнего обновления записи о тарифе';
+comment on table tariff_plan is 'Таблица хранения информации о тарифах';
+comment on column tariff_plan.id is 'Первичный ключ';
+comment on column tariff_plan.name is 'Название тарифа';
+comment on column tariff_plan.description is 'Описание тарифа';
+comment on column tariff_plan.price_per_month is 'Стоимость тарифа рублей в месяц';
+comment on column tariff_plan.start_date is 'Дата начала действия тарифа';
+comment on column tariff_plan.end_date is 'Дата окончания действия тарифа';
+comment on column tariff_plan.created_at is 'Дата и время создания записи о тарифе';
+comment on column tariff_plan.updated_at is 'Дата и время последнего обновления записи о тарифе';
 
 create table tariff_extra_description
 (

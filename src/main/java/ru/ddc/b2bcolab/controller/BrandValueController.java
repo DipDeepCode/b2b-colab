@@ -12,72 +12,72 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.ddc.b2bcolab.controller.payload.CreateBrandRequest;
-import ru.ddc.b2bcolab.model.Brand;
-import ru.ddc.b2bcolab.service.BrandService;
+import ru.ddc.b2bcolab.model.BrandValue;
+import ru.ddc.b2bcolab.service.BrandValueService;
 
-@Tag(name = "BrandController", description = "Контроллер сохранения и получения брендов (анкет)")
+@Tag(name = "BrandValueController", description = "Контроллер для работы с ключевыми ценностями бренда")
 @RestController
-@RequestMapping("/api/brand")
+@RequestMapping("/api/brand-values")
 @RequiredArgsConstructor
 @CrossOrigin(
         origins = {"http://localhost:8080", "http://localhost:3000", "https://w2w-project-site.vercel.app"},
         allowCredentials = "true")
-public class BrandController {
-    private final BrandService brandService;
+public class BrandValueController {
+    private final BrandValueService brandValueService;
 
-    @Operation(summary = "Сохранение бренда")
+    @Operation(summary = "Сохранение ключевой ценности бренда")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Бренд успешно сохранен",
-                    content = @Content(schema = @Schema(implementation = Brand.class))),
+                    description = "Ключевая ценность бренда успешно сохранена",
+                    content = @Content(schema = @Schema(implementation = BrandValue.class))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<?> createBrand(@Parameter(description = "Бренд") @RequestBody CreateBrandRequest request) {
-        return ResponseEntity.ok(brandService.saveBrand(request));
+    public ResponseEntity<?> createBrandValue(@Parameter(description = "Ключевая ценность бренда") @RequestBody BrandValue brandValue) {
+        return ResponseEntity.ok(brandValueService.save(brandValue));
     }
 
-    @Operation(summary = "Получение бренда по его id")
+    @Operation(summary = "Получение всех ключевых ценностей бренда")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "Успешный запрос",
-                    content = @Content(schema = @Schema(implementation = Brand.class))),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Доступ к запрошенному ресурсу запрещен",
-                    content = @Content)
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getBrandById(@PathVariable Long id) {
-        return ResponseEntity.ok(brandService.getById(id));
-    }
-    @Operation(summary = "Получение всех брендов")
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Успешный запрос",
-                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Brand.class)))),
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = BrandValue.class)))),
             @ApiResponse(
                     responseCode = "403",
                     description = "Доступ к запрошенному ресурсу запрещен",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<?> getAllBrands() {
-        return ResponseEntity.ok(brandService.findAll());
+    public ResponseEntity<?> getAllBrandValues() {
+        return ResponseEntity.ok(brandValueService.findAll());
     }
 
-    @Operation(summary = "Обновление бренда")
+    @Operation(summary = "Получение ключевой ценности бренда по его id")
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Успешный запрос",
+                    content = @Content(schema = @Schema(implementation = BrandValue.class))),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Доступ к запрошенному ресурсу запрещен",
+                    content = @Content)
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getBrandValueById(@PathVariable Long id) {
+        return ResponseEntity.ok(brandValueService.findById(id));
+    }
+
+    @Operation(summary = "Обновление ключевой ценности бренда")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Бренд успешно обновлен",
+                    description = "Ключевая ценность бренда успешно обновлена",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -85,17 +85,17 @@ public class BrandController {
                     content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateBrand(@PathVariable Long id, @RequestBody Brand updatedBrand) {
-        updatedBrand.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
-        brandService.update(updatedBrand);
+    public ResponseEntity<Void> updateBrandValue(@PathVariable Long id, @RequestBody BrandValue updatedBrandValue) {
+        updatedBrandValue.setId(id); // Убедимся, что id совпадает с тем, который передан в URL
+        brandValueService.update(updatedBrandValue);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "Удаление бренда")
+    @Operation(summary = "Удаление ключевой ценности бренда")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "204",
-                    description = "Бренд успешно удален",
+                    description = "Ключевая ценность бренда успешно удалена",
                     content = @Content),
             @ApiResponse(
                     responseCode = "403",
@@ -103,8 +103,8 @@ public class BrandController {
                     content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBrand(@PathVariable Long id) {
-        brandService.deleteById(id);
+    public ResponseEntity<Void> deleteBrandValue(@PathVariable Long id) {
+        brandValueService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
