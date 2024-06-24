@@ -1,24 +1,24 @@
-CREATE TABLE customers
+create table customers
 (
-    phone_number VARCHAR(50)  NOT NULL PRIMARY KEY,
-    email        VARCHAR(500) NOT NULL UNIQUE,
-    password     VARCHAR(500) NOT NULL,
-    enabled      BOOLEAN      NOT NULL
+    phone_number varchar(50)  not null primary key,
+    email        varchar(500) not null unique,
+    password     varchar(500) not null,
+    enabled      boolean      not null
 );
 
-COMMENT ON TABLE customers IS 'Таблица пользователей';
-COMMENT ON COLUMN customers.phone_number IS 'Номер телефона пользователя';
-COMMENT ON COLUMN customers.email IS 'Почта пользователя';
-COMMENT ON COLUMN customers.password IS 'Пароль пользователя';
-COMMENT ON COLUMN customers.enabled IS 'Пользователь активирован';
+comment on table customers is 'Таблица пользователей';
+comment on column customers.phone_number is 'Номер телефона пользователя';
+comment on column customers.email is 'Почта пользователя';
+comment on column customers.password is 'Пароль пользователя';
+comment on column customers.enabled is 'Пользователь активирован';
 
-CREATE TABLE authority
+create table authority
 (
-    phone_number VARCHAR(50) NOT NULL,
-    role         VARCHAR(50) NOT NULL,
-    FOREIGN KEY (phone_number) REFERENCES customers (phone_number)
+    phone_number varchar(50) not null,
+    role         varchar(50) not null,
+    foreign key (phone_number) references customers (phone_number)
 );
 
-COMMENT ON TABLE authority IS 'Таблица ролей пользователя';
-COMMENT ON COLUMN authority.phone_number IS 'Внешний ключ на таблицу customers';
-COMMENT ON COLUMN authority.role IS 'Роль пользователя';
+comment on table authority is 'Таблица ролей пользователя';
+comment on column authority.phone_number is 'Внешний ключ на таблицу customers';
+comment on column authority.role is 'Роль пользователя';

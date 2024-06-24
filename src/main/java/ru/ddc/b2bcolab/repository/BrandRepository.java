@@ -20,7 +20,18 @@ public class BrandRepository implements CrudRepository<Brand, Long> {
     @Override
     public Brand save(Brand brand) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcClient.sql("insert into brands (customer_phone_number, name, tariff_plan_id) values (:customerPhoneNumber, :name, :tarifPlanId) returning id")
+        jdbcClient.sql("insert into brands(customer_phone_number, count_ball, count_like, tariff_plan_id, telegram_nickname, birth_date, " +
+                        "position, discussion_topics, public_speaking_willingness, entrepreneur_community, name, " +
+                        "business_category, brand_type, branded_social_link, brand_website_link, followers_count, " +
+                        "average_check, product_uniqueness, customer_problem_solved, interaction_formats, " +
+                        "collaboration_goal, preferred_business_category, brand_presence_territory, business_essence, " +
+                        "brand_values, target_audience_description, target_audience_categories) " +
+                        "values (:customerPhoneNumber, :countBall, :countLike, :tariffId, :telegramNick, :birthDate, " +
+                        ":position, :discussionTopics, :publicSpeakingWillingness, :entrepreneurCommunity, :brandName, " +
+                        ":businessCategory, :brandType, :brandedSocialLink, :brandWebsiteLink, :followersCount, " +
+                        ":averageCheck, :productUniqueness, :customerProblemSolved, :interactionFormats, :collaborationGoal, " +
+                        ":preferredBusinessCategory, :brandPresenceTerritory, :businessEssence, :brandValues, " +
+                        ":targetAudienceDescription, :targetAudienceCategories) returning id")
                 .paramSource(brand)
                 .update(keyHolder);
         brand.setId(keyHolder.getKeyAs(Long.class));
