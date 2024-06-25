@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ddc.b2bcolab.controller.payload.ChargeRequest;
@@ -16,6 +17,7 @@ import ru.ddc.b2bcolab.model.Subscription;
 import ru.ddc.b2bcolab.service.StripeService;
 import ru.ddc.b2bcolab.service.SubscriptionService;
 
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -111,5 +113,22 @@ public class PaymentController {
         paymentsService.upgradeSubscription(subscription, upgradeRequest);
         return ResponseEntity.ok("Subscription upgraded successfully");
     }
+
+    @ExceptionHandler({StripeException.class})
+    public ResponseEntity<?> handleStripeException(StripeException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("Error", ex.getMessage()));
+    }
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("Некорректный ввод", ex.getMessage()));
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<?> handleGeneralException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("Внутренняя ошибка сервера", ex.getMessage()));
+    }
+
+
 }
 

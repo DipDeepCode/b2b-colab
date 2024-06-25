@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -142,4 +143,20 @@ public class AuthController {
                 });
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("Некорректный ввод", ex.getMessage()));
+    }
+
+    @ExceptionHandler({IllegalStateException.class})
+    public ResponseEntity<?> handleIllegalStateException(IllegalStateException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("Операция недопустима", ex.getMessage()));
+    }
+
+    @ExceptionHandler({Exception.class})
+    public ResponseEntity<?> handleGeneralException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("Внутренняя ошибка сервера", ex.getMessage()));
+    }
+
 }
