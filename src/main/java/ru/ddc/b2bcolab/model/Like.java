@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
+@Builder
 public class Like {
 
     private long id; // Уникальный идентификатор лайка

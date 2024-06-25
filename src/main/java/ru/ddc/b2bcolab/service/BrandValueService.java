@@ -16,6 +16,10 @@ public class BrandValueService {
 
     @Transactional
     public BrandValue save(BrandValue brandValue) {
+        brandValue = BrandValue.builder()
+                .value(brandValue.getValue())
+                .brandId(brandValue.getBrandId())
+                .build();
         return brandValueRepository.save(brandValue);
     }
 

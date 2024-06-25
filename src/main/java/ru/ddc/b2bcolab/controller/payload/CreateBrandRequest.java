@@ -12,4 +12,5 @@ import lombok.Setter;
 public class CreateBrandRequest {
     private String customerPhoneNumber;
     private String name;
+
 }

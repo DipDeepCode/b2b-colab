@@ -17,13 +17,16 @@ public class Tariff {
     private TariffType type;
     private LocalDate startDate;
     private LocalDate endDate;
+    private long brandId;
+
     private TariffFeatures features;
 
-    public Tariff(TariffType type, LocalDate startDate) {
+    public Tariff(TariffType type, LocalDate startDate, long brandId) {
         this.type = type;
         this.startDate = startDate;
         this.endDate = startDate.plusYears(1); // Пример: тариф на 1 год
         this.features = createFeatures(type);
+        this.brandId = brandId;
     }
 
     public TariffFeatures createFeatures(TariffType type) {

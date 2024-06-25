@@ -18,11 +18,8 @@ public class TariffRepository {
 
     public Tariff save(Tariff tariff) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcClient.sql("""
-                insert into tariffs (type, startDate, endDate, features)
-                values (:type, :startDate, :endDate, :features)
-                returning id
-                """)
+        jdbcClient.sql("insert into tariffs (type, start_date, end_date, brand_id) " +
+                        "values (:type, :startDate, :endDate, :brandId)")
                 .paramSource(tariff)
                 .update(keyHolder);
         tariff.setId(keyHolder.getKeyAs(Long.class));
@@ -43,11 +40,13 @@ public class TariffRepository {
     }
 
     public int update(Tariff tariff) {
-        return jdbcClient.sql("""
-                update tariffs
-                set type = :type, startDate = :startDate, endDate = :endDate, features = :features
-                where id = :id
-                """)
+        return jdbcClient.sql("update tariffs " +
+                        "set " +
+                        "type = :type, " +
+                        "start_date = :startDate, " +
+                        "end_date = :endDate, " +
+                        "brand_id = :brandId " +
+                        "where id = :id")
                 .paramSource(tariff)
                 .update();
     }

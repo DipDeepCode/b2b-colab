@@ -16,6 +16,10 @@ public class GoalCollaborationService {
 
     @Transactional
     public GoalCollaboration save(GoalCollaboration goalCollaboration) {
+        goalCollaboration = GoalCollaboration.builder()
+                .name(goalCollaboration.getName())
+                .brandId(goalCollaboration.getBrandId())
+                .build();
         return goalCollaborationRepository.save(goalCollaboration);
     }
 

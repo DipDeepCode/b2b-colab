@@ -16,6 +16,10 @@ public class TargetAudienceCategoryService {
 
     @Transactional
     public TargetAudienceCategory save(TargetAudienceCategory targetAudienceCategory) {
+        targetAudienceCategory = TargetAudienceCategory.builder()
+                .category(targetAudienceCategory.getCategory())
+                .brandId(targetAudienceCategory.getBrandId())
+                .build();
         return targetAudienceCategoryRepository.save(targetAudienceCategory);
     }
 

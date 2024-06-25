@@ -16,6 +16,10 @@ public class InteractionFormatService {
 
     @Transactional
     public InteractionFormat save(InteractionFormat interactionFormat) {
+        interactionFormat = InteractionFormat.builder()
+                .name(interactionFormat.getName())
+                .brandId(interactionFormat.getBrandId())
+                .build();
         return interactionFormatRepository.save(interactionFormat);
     }
 

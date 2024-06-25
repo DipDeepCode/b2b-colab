@@ -29,8 +29,8 @@ public class TariffController {
             @ApiResponse(responseCode = "400", description = "Некорректные данные")
     })
     @PostMapping("/buy/{type}")
-    public ResponseEntity<Tariff> buyTariff(@PathVariable TariffType type) {
-        return ResponseEntity.ok(tariffService.buyTariff(type));
+    public ResponseEntity<Tariff> buyTariff(@PathVariable TariffType type, @RequestBody Tariff tariff) {
+        return ResponseEntity.ok(tariffService.buyTariff(tariff, type));
     }
 
     @Operation(summary = "Показать мой тариф")

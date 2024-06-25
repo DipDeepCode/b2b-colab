@@ -3,6 +3,7 @@ package ru.ddc.b2bcolab.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.ddc.b2bcolab.model.Brand;
 import ru.ddc.b2bcolab.model.Tariff;
 import ru.ddc.b2bcolab.repository.TariffRepository;
 import ru.ddc.b2bcolab.repository.TariffType;
@@ -16,10 +17,19 @@ import java.util.Optional;
 public class TariffService {
     private final TariffRepository tariffRepository;
 
+//    @Transactional
+//    public Tariff buyTariff(TariffType type) {
+//        Tariff newTariff = new Tariff(type, LocalDate.now(), tariffRepository.findById());
+//        return tariffRepository.save(newTariff);
+//    }
     @Transactional
-    public Tariff buyTariff(TariffType type) {
-        Tariff newTariff = new Tariff(type, LocalDate.now());
-        return tariffRepository.save(newTariff);
+    public Tariff buyTariff(Tariff tariff, TariffType type) {
+        tariff = Tariff.builder()
+                .type(type)
+                .brandId(tariff.getBrandId())
+                .startDate(LocalDate.now())
+                .build();
+        return tariffRepository.save(tariff);
     }
 
     public Tariff getMyTariff(Long id) {

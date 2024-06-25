@@ -16,22 +16,21 @@ import java.util.Optional;
 public class BrandRepository implements CrudRepository<Brand, Long> {
     private final JdbcClient jdbcClient;
 
-
     @Override
     public Brand save(final Brand model) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcClient.sql("insert into brands(customer_phone_number, count_ball, count_like, tariff_id, telegram_nick, birth_date, " +
-                        "position, discussion_topics, public_speaking_willingness, entrepreneur_community, brand_name, " +
-                        "business_category, brand_type, branded_social_link, brand_website_link, followers_count, " +
+        jdbcClient.sql("insert into brands(customer_phone_number, first_name, last_name, count_ball, count_like, tariff_id, " +
+                        "telegram_nick, birth_date, position, discussion_topics, public_speaking_willingness, entrepreneur_community, " +
+                        "brand_name, business_category, brand_type, branded_social_link, brand_website_link, followers_count, " +
                         "average_check, product_uniqueness, customer_problem_solved, interaction_formats, " +
                         "collaboration_goal, preferred_business_category, brand_presence_territory, business_essence, " +
                         "brand_values, target_audience_description, target_audience_categories) " +
-                        "values (:customerPhoneNumber, :countBall, :countLike, :tariffId, :telegramNick, :birthDate, " +
+                        "values (:customerPhoneNumber, :firstName, :lastName, :countBall, :countLike, :tariffId, :telegramNick, :birthDate, " +
                         ":position, :discussionTopics, :publicSpeakingWillingness, :entrepreneurCommunity, :brandName, " +
                         ":businessCategory, :brandType, :brandedSocialLink, :brandWebsiteLink, :followersCount, " +
                         ":averageCheck, :productUniqueness, :customerProblemSolved, :interactionFormats, :collaborationGoal, " +
                         ":preferredBusinessCategory, :brandPresenceTerritory, :businessEssence, :brandValues, " +
-                        ":targetAudienceDescription, :targetAudienceCategories) returning id")
+                        ":targetAudienceDescription, :targetAudienceCategories)")
                 .paramSource(model)
                 .update(keyHolder);
         model.setId(keyHolder.getKeyAs(Long.class));

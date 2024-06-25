@@ -20,6 +20,11 @@ public class LikeService {
 
     @Transactional
     public Like save(Like like) {
+        like = Like.builder()
+                .timestamp(like.getTimestamp())
+                .fromBrandId(like.getFromBrandId())
+                .toBrandId(like.getToBrandId())
+                .build();
         return likeRepository.save(like);
     }
 

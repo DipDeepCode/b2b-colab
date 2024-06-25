@@ -16,6 +16,10 @@ public class TopicDiscussionService {
 
     @Transactional
     public TopicDiscussion save(TopicDiscussion topicDiscussion) {
+        topicDiscussion = TopicDiscussion.builder()
+                .name(topicDiscussion.getName())
+                .brandId(topicDiscussion.getBrandId())
+                .build();
         return topicDiscussionRepository.save(topicDiscussion);
     }
 
