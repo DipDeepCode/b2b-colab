@@ -1,0 +1,38 @@
+version: "3.9"
+
+volumes:
+  postgres_volume:
+  uploads_volume:
+
+services:
+  app:
+    build: /
+    restart: always
+    container_name: b2b_app
+    depends_on:
+      - db
+    ports:
+      - "8090:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=
+      - SPRING_DATASOURCE_USERNAME=
+      - SPRING_DATASOURCE_PASSWORD=
+      - STRIPE_SK=
+      - STRIPE_PK=
+      - MAIL_USER=
+      - MAIL_PASS=
+    volumes:
+      - uploads_volume:/var/lib/b2b/upload
+
+  db:
+    image: postgres:latest
+    restart: always
+    container_name: b2b_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=
+      - POSTGRES_USER=
+      - POSTGRES_PASSWORD=
+    volumes:
+      - postgres_volume:/var/lib/b2b/data
