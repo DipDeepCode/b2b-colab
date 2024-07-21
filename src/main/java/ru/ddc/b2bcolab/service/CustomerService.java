@@ -28,6 +28,7 @@ import ru.ddc.b2bcolab.utils.RegisterCustomerRequestValidator;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -138,5 +139,44 @@ public class CustomerService {
             SecurityContextHolder.setContext(context);
             contextRepository.saveContext(context, httpServletRequest, httpServletResponse);
         }
+    }
+
+    public List<Customer> findAllCustomer() {
+        return customerRepository.findAll();
+    }
+
+
+    public Optional<Customer> findCustomerByPhoneNumber(String phoneNumber) {
+        return customerRepository.findByPhoneNumber(phoneNumber);
+    }
+
+    public Optional<Customer> findCustomerByEmail(String email) {
+        return customerRepository.findByEmail(email);
+    }
+
+
+    public Customer saveCustomer(Customer customer) {
+        for (Authority authority : customer.getCustomerAuthorities()) {
+            customerRepository.addAuthorities(customer, authority);
+        }
+        return customerRepository.save(customer);
+    }
+
+    public int updateCustomer(Customer customer) {
+        for (Authority authority : customer.getCustomerAuthorities()) {
+            customerRepository.addAuthorities(customer, authority);
+        }
+        return customerRepository.update(customer);
+    }
+
+    public int deleteCustomer(String phoneNumber) {
+        // Удаляем записи из таблицы Authority
+        int deletedAuthorities = authorityRepository.deleteById(phoneNumber);
+
+        // Удаляем клиента из таблицы Customer
+        int deletedCustomers = customerRepository.deleteById(phoneNumber);
+
+        // Возвращаем общее количество удаленных записей
+        return deletedAuthorities + deletedCustomers;
     }
 }

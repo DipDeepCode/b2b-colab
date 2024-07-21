@@ -15,8 +15,7 @@ COMMENT ON COLUMN customers.enabled IS 'Пользователь активир�
 CREATE TABLE authority
 (
     phone_number VARCHAR(50) NOT NULL,
-    role         VARCHAR(50) NOT NULL,
-    FOREIGN KEY (phone_number) REFERENCES customers (phone_number)
+    role         VARCHAR(50) NOT NULL
 );
 
 COMMENT ON TABLE authority IS 'Таблица ролей пользователя';
